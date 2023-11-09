@@ -16,7 +16,7 @@ export default defineConfig((configEnv) => ({
       linters: [new EsLinter({ configEnv })],
     }),
     dts({
-      include: ["src/"],
+      include: ["src/components", "src/core", "index.ts"],
     }),
   ],
   build: {
