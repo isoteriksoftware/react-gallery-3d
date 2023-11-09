@@ -50,6 +50,7 @@
     "@types/node": "^20.9.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/three": "^0.158.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
@@ -61,14 +62,14 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hooks": "^1.0.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vite-plugin-dts": "^3.6.3",
     "vite-plugin-linter": "^2.0.7",
-    "vite-tsconfig-paths": "^4.2.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "resolutions": {
     "jackspeak": "2.1.1"
