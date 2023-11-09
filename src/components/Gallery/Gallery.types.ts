@@ -4,11 +4,11 @@ import { HollowCylinderProps } from "../HollowCylinder";
 import { GroundProps } from "../Ground";
 
 type MinThreeItemsArray<T> = [T, T, T, ...T[]];
-type CylinderProps = Omit<HollowCylinderProps, "items">;
+export type GalleryItemProps = Omit<HollowCylinderProps, "items">;
 
-export interface CarouselProps extends GroupProps {
+export interface GalleryProps extends GroupProps {
   items: MinThreeItemsArray<GalleryItem>;
-  cylinder?: CylinderProps;
+  item?: GalleryItemProps;
   ground?: GroundProps;
   disableGround?: boolean;
 }

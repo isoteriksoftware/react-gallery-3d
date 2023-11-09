@@ -1,17 +1,17 @@
-import { CarouselProps } from "./Gallery.types";
+import { GalleryProps } from "./Gallery.types";
 import React, { useLayoutEffect } from "react";
 import { Ground } from "../Ground";
 import { HollowCylinder } from "../HollowCylinder";
 import { VideoItem } from "../../core";
 
-const Gallery: React.FC<CarouselProps> = ({ items, cylinder, ground, disableGround, ...rest }) => {
+const Gallery: React.FC<GalleryProps> = ({ items, item, ground, disableGround, ...rest }) => {
   const {
     width = 120,
     height = 50,
     radialSegments = 50,
     heightSegments = 1,
     innerRadiusPercent = 0.99,
-  } = cylinder || {};
+  } = item || {};
 
   useLayoutEffect(() => {
     // Play all videos having autoplay enabled

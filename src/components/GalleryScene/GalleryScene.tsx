@@ -1,11 +1,11 @@
 import React, { useMemo, Suspense } from "react";
-import { CarouselSceneProps } from "./GalleryScene.types";
+import { GallerySceneProps } from "./GalleryScene.types";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Gallery } from "../Gallery";
 import { Color } from "three";
 
-const GalleryScene: React.FC<CarouselSceneProps> = ({
+const GalleryScene: React.FC<GallerySceneProps> = ({
   backgroundColor = "#000000",
   fogColor = "#000000",
   gallery,

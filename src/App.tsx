@@ -1,6 +1,6 @@
 import { GalleryScene } from "./components";
 import { calculateCylinderSegmentTransform, SolidColorItem, ViewRendererProps } from "./core";
-import { Text } from "@react-three/drei";
+import { Html, Text } from "@react-three/drei";
 
 function App() {
   const createText = (text: string, viewRendererProps: ViewRendererProps) => {
@@ -45,8 +45,36 @@ function App() {
             new SolidColorItem("orange", (props) => {
               return createText("ORANGE", props);
             }),
-            new SolidColorItem("purple"),
+            new SolidColorItem("purple", (props) => {
+              const transform = calculateCylinderSegmentTransform(
+                props.index,
+                props.items.length,
+                props.outerRadius,
+              );
+
+              return (
+                <Html position={transform.position} rotation={transform.rotation} transform>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "white",
+                      transform: "scale(10, 10)",
+                    }}
+                  >
+                    PURPLE <sub style={{ marginLeft: "5px" }}>with Html</sub>
+                  </div>
+                </Html>
+              );
+            }),
           ],
+          item: {
+            width: 120,
+            height: 90,
+          },
         }}
       />
     </div>
