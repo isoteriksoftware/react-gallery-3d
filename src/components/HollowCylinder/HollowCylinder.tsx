@@ -62,11 +62,10 @@ const HollowCylinder: React.FC<HollowCylinderProps> = ({
       innerMesh.position.y = -0.01; // Offset to prevent z-fighting
 
       // Perform CSG subtraction to hollow out the segment
-      const finalGeometry = CSG.subtract(outerMesh, innerMesh);
+      const finalMesh = CSG.subtract(outerMesh, innerMesh);
+      finalMesh.material = items[index].generateMaterial(finalMesh.geometry, props);
 
-      const material = items[index].generateMaterial(finalGeometry.geometry, props);
-
-      return new Mesh(finalGeometry.geometry, material);
+      return finalMesh;
     });
   }, [items, width, innerRadiusPercent, height, radialSegments, heightSegments]);
 
