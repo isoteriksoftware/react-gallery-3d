@@ -12,6 +12,7 @@ const GalleryScene: React.FC<CarouselSceneProps> = ({
   orbitControls,
   children,
   disableControls,
+  disableFog,
   ...rest
 }) => {
   const {
@@ -33,7 +34,7 @@ const GalleryScene: React.FC<CarouselSceneProps> = ({
       scene={{ background: background }}
       {...rest}
     >
-      <fog attach="fog" color={fogColor} near={10} far={400} />
+      {!disableFog && <fog attach="fog" color={fogColor} near={10} far={400} />}
 
       <Suspense fallback={null}>
         <Gallery {...gallery} />

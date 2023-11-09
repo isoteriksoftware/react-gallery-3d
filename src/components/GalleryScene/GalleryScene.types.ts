@@ -10,4 +10,5 @@ export type CarouselSceneProps = Omit<CanvasProps, "children"> & {
   orbitControls?: OrbitControlsProps;
   children?: ReactNode;
   disableControls?: boolean;
+  disableFog?: boolean;
 };
