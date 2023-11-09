@@ -1,11 +1,14 @@
-import GalleryItem from "./GalleryItem";
 import { Texture, MeshStandardMaterial, Material, DoubleSide, TextureLoader } from "three";
+import BaseGalleryItem from "./BaseGalleryItem";
+import { ViewRenderer } from "./types";
 
-class ImageItem implements GalleryItem {
+class ImageItem extends BaseGalleryItem {
   protected readonly url: string | undefined;
   protected texture: Texture | undefined;
 
-  constructor(urlOrTexture: string | Texture) {
+  constructor(urlOrTexture: string | Texture, viewRenderer?: ViewRenderer) {
+    super(viewRenderer);
+
     if (typeof urlOrTexture === "string") {
       this.url = urlOrTexture;
     } else {
@@ -26,6 +29,9 @@ class ImageItem implements GalleryItem {
       toneMapped: true,
       map: this.texture,
       side: DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
     });
   }
 }

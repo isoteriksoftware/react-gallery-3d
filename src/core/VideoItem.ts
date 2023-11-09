@@ -1,13 +1,16 @@
-import GalleryItem from "./GalleryItem";
 import { DoubleSide, Material, MeshStandardMaterial, VideoTexture } from "three";
+import BaseGalleryItem from "./BaseGalleryItem";
+import { ViewRenderer } from "./types";
 
-class VideoItem implements GalleryItem {
+class VideoItem extends BaseGalleryItem {
   protected readonly source: string;
   protected texture: VideoTexture | undefined;
   protected video: HTMLVideoElement | undefined;
   protected autoplay: boolean = true;
 
-  constructor(source: string, autoplay: boolean = true) {
+  constructor(source: string, viewRenderer?: ViewRenderer, autoplay: boolean = true) {
+    super(viewRenderer);
+
     this.source = source;
     this.autoplay = autoplay;
   }
@@ -30,6 +33,9 @@ class VideoItem implements GalleryItem {
       toneMapped: true,
       map: this.texture,
       side: DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
     });
   }
 
