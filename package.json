@@ -25,10 +25,18 @@
     ]
   },
   "dependencies": {
+    "@react-three/drei": "^9.88.11",
+    "@react-three/fiber": "^8.15.10",
+    "regexp-to-ast": "^0.5.0",
+    "three": "^0.158.0",
+    "three-csg-ts": "^3.1.13"
+  },
+  "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/node": "^20.9.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -42,6 +50,10 @@
     "prettier": "^3.0.3",
     "react-hooks": "^1.0.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.6.3"
+  },
+  "resolutions": {
+    "jackspeak": "2.1.1"
   }
 }
