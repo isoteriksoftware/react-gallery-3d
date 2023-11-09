@@ -15,7 +15,7 @@ module.exports = {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": ["react", "@typescript-eslint", "react-hooks", "prettier","simple-import-sort"],
+    "plugins": ["react", "@typescript-eslint", "react-hooks", "prettier"],
     "rules": {
         "camelcase": "error",
         "no-duplicate-imports": "error",
@@ -27,11 +27,10 @@ module.exports = {
         "react-hooks/exhaustive-deps": "off",
         "react/prop-types": 0,
         "react/display-name": 0,
-        "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error",
         "@typescript-eslint/no-empty-function":"off",
         "react/no-unknown-property":"off",
-        "react/no-unescaped-entities ":"off"
+        "react/no-unescaped-entities ":"off",
+        "padding-line-between-statements": "off"
     },
     "settings": {
         "import/resolver": {
