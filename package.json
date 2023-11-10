@@ -38,12 +38,12 @@
   "module": "./dist/react-gallery-3d.es.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "three-csg-ts": "^3.1.13",
-    "@react-three/drei": "^9.88.11"
+    "three-csg-ts": "^3.1.13"
   },
   "peerDependencies": {
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0",
+    "@react-three/drei": ">=9.88.11",
     "@react-three/fiber": ">=8.15.10",
     "three": ">=0.158.0"
   },
@@ -71,6 +71,7 @@
     "vite-plugin-dts": "^3.6.3",
     "vite-plugin-linter": "^2.0.7",
     "vite-tsconfig-paths": "^4.2.1",
+    "@react-three/drei": "^9.88.11",
     "@react-three/fiber": "^8.15.10",
     "three": "^0.158.0"
   },
