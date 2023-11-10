@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import GalleryContext from "./GalleryContext";
 import GalleryItemContext from "../GalleryItem/GalleryItemContext";
-import { GalleryProps } from "./Gallery.types";
+import { AllowedGalleryItemTypes, GalleryProps } from "./Gallery.types";
 import { Ground } from "../Ground";
 
 const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround, ...rest }) => {
@@ -47,11 +47,17 @@ const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround
       }}
     >
       <group position={[0, 0, 0]} {...rest}>
-        {children.map((child, index) => (
-          <GalleryItemContext.Provider key={index} value={index}>
-            {child}
-          </GalleryItemContext.Provider>
-        ))}
+        {children.map((child, index) => {
+          if (!AllowedGalleryItemTypes.includes(child.type)) {
+            throw new Error("One of the children of Gallery is not a valid type.");
+          }
+
+          return (
+            <GalleryItemContext.Provider key={index} value={index}>
+              {child}
+            </GalleryItemContext.Provider>
+          );
+        })}
       </group>
 
       {!disableGround && <Ground position={[0, -height / 2, 0]} {...ground} />}
