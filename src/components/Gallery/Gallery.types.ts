@@ -19,18 +19,15 @@ export interface GalleryState {
 }
 
 type GalleryItemType = ReactElement<typeof GalleryItemView>;
-export type GalleryChildren = [
-  GalleryItemType,
-  GalleryItemType,
-  GalleryItemType,
-  ...[GalleryItemType],
-];
+export type GalleryChildren =
+  | [GalleryItemType, GalleryItemType, GalleryItemType]
+  | [GalleryItemType, GalleryItemType, GalleryItemType, ...GalleryItemType[]];
 
 export interface GalleryProps extends GroupProps {
   children: GalleryChildren;
   ground?: GroundProps;
   disableGround?: boolean;
-  item: {
+  item?: {
     width?: number;
     height?: number;
     radialSegments?: number;

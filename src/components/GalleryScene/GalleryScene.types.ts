@@ -3,7 +3,9 @@ import { Gallery } from "../Gallery";
 import { ReactElement, ReactNode } from "react";
 import { OrbitControlsProps } from "@react-three/drei";
 
-export type GallerySceneChildren = [ReactElement<typeof Gallery>, ...ReactNode[]];
+export type GallerySceneChildren =
+  | ReactElement<typeof Gallery>
+  | [ReactElement<typeof Gallery>, ...ReactNode[]];
 
 export type GallerySceneProps = Omit<CanvasProps, "children"> & {
   children: GallerySceneChildren;

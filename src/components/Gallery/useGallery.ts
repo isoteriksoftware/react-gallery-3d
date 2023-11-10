@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import GalleryContext from "./GalleryContext";
-import { GALLERY_NO_PROVIDER_FLAG } from "react-gallery-3d";
+import { GALLERY_NO_PROVIDER_FLAG } from "./Gallery.types";
 
 const useGallery = () => {
   const data = useContext(GalleryContext);

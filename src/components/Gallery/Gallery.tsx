@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
 import GalleryContext from "./GalleryContext";
-import { GalleryProps, Ground } from "react-gallery-3d";
 import GalleryItemContext from "../GalleryItem/GalleryItemContext";
+import { GalleryProps } from "./Gallery.types";
+import { Ground } from "../Ground";
 
 const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround, ...rest }) => {
   if (children.length < 3) {
@@ -46,7 +47,9 @@ const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround
     >
       <group position={[0, 0, 0]} {...rest}>
         {children.map((child, index) => (
-          <GalleryItemContext.Provider value={index}>{child}</GalleryItemContext.Provider>
+          <GalleryItemContext.Provider key={index} value={index}>
+            {child}
+          </GalleryItemContext.Provider>
         ))}
       </group>
 
