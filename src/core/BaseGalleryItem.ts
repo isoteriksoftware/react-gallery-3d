@@ -10,9 +10,9 @@ abstract class BaseGalleryItem implements GalleryItem {
     this.viewRenderer = viewRenderer;
   }
 
-  renderView(cylinderProps: ViewRendererProps): ReactNode {
+  renderView(viewRendererProps: ViewRendererProps): ReactNode {
     if (this.viewRenderer) {
-      return this.viewRenderer(cylinderProps);
+      return this.viewRenderer(viewRendererProps);
     }
 
     return null;
