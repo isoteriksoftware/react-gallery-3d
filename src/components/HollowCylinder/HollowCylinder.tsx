@@ -2,7 +2,7 @@ import React, { Fragment, useMemo } from "react";
 import { HollowCylinderProps } from "./HollowCylinder.types";
 import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
-import { ViewRendererProps } from "../../core";
+import { ViewRendererParams } from "../../core";
 
 const HollowCylinder: React.FC<HollowCylinderProps> = ({
   width = 120,
@@ -32,7 +32,7 @@ const HollowCylinder: React.FC<HollowCylinderProps> = ({
       items,
     };
 
-    const rendererProps: ViewRendererProps = {
+    const rendererProps: ViewRendererParams = {
       width: width!,
       height: height!,
       radialSegments: radialSegments!,

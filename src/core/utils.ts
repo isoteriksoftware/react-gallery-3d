@@ -6,19 +6,18 @@
  * @param index - the index of the current segment for which the transformation is being calculated.
  * It's used to determine the angular position around the cylinder where an object (e.g., text or another 3D object)
  * can be placed.
- * @param totalSegments - the total number of segments in the cylinder.
+ * @param sectionAngle - the angle of a single segment of the cylinder.
  * @param outerRadius - the radius of the cylinder from its central axis to the outer edge. It's used to calculate how
- * far from the center of the cylinder the object should be placed.
+ * far from the center of the cylinder an object can be placed.
  */
 export const calculateCylinderSegmentTransform = (
   index: number,
-  totalSegments: number,
+  sectionAngle: number,
   outerRadius: number,
 ): {
   position: [number, number, number];
   rotation: [number, number, number];
 } => {
-  const sectionAngle = (2 * Math.PI) / totalSegments;
   const centerAngle = index * -sectionAngle + sectionAngle;
 
   const x = outerRadius * Math.cos(centerAngle);

@@ -1,7 +1,7 @@
 import { HollowCylinderProps } from "react-gallery-3d";
 import { ReactNode } from "react";
 
-export type ViewRendererProps = Required<
+export type ViewRendererParams = Required<
   Pick<
     HollowCylinderProps,
     "width" | "height" | "radialSegments" | "heightSegments" | "innerRadiusPercent" | "items"
@@ -13,4 +13,4 @@ export type ViewRendererProps = Required<
   innerRadius: number;
 };
 
-export type ViewRenderer = (cylinderProps: ViewRendererProps) => ReactNode;
+export type ViewRenderer = (viewRendererParams: ViewRendererParams) => ReactNode;

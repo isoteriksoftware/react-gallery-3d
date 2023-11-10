@@ -1,7 +1,7 @@
 import GalleryItem from "./GalleryItem";
 import { Material } from "three";
 import { ReactNode } from "react";
-import { ViewRenderer, ViewRendererProps } from "./types";
+import { ViewRenderer, ViewRendererParams } from "./types";
 
 abstract class BaseGalleryItem implements GalleryItem {
   protected readonly viewRenderer?: ViewRenderer;
@@ -10,9 +10,9 @@ abstract class BaseGalleryItem implements GalleryItem {
     this.viewRenderer = viewRenderer;
   }
 
-  renderView(viewRendererProps: ViewRendererProps): ReactNode {
+  renderView(viewRendererParams: ViewRendererParams): ReactNode {
     if (this.viewRenderer) {
-      return this.viewRenderer(viewRendererProps);
+      return this.viewRenderer(viewRendererParams);
     }
 
     return null;
