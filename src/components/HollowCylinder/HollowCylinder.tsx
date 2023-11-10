@@ -9,7 +9,7 @@ const HollowCylinder: React.FC<HollowCylinderProps> = ({
   height = 50,
   radialSegments = 50,
   heightSegments = 1,
-  innerRadiusPercent = 0.9,
+  innerRadiusPercent = 0.99,
   items,
   ...rest
 }) => {
@@ -17,15 +17,12 @@ const HollowCylinder: React.FC<HollowCylinderProps> = ({
     throw new Error("At least 3 items are required");
   }
 
-  const sectionAngle = useMemo(() => (2 * Math.PI) / items.length, [items.length]);
-  const outerRadius = useMemo(() => width / 2, [width]);
-  const innerRadius = useMemo(
-    () => outerRadius * innerRadiusPercent,
-    [outerRadius, innerRadiusPercent],
-  );
-
   const elements = useMemo(() => {
     const sides = items.length;
+    const sectionAngle = (2 * Math.PI) / sides;
+    const outerRadius = width / 2;
+    const innerRadius = outerRadius * innerRadiusPercent;
+
     const props = {
       width,
       height,
