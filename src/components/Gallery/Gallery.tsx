@@ -46,7 +46,7 @@ const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround
         },
       }}
     >
-      <group position={[0, 0, 0]} {...rest}>
+      <group {...rest}>
         {children.map((child, index) => {
           if (!AllowedGalleryItemTypes.includes(child.type)) {
             throw new Error("One of the children of Gallery is not a valid type.");
