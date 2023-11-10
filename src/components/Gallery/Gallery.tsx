@@ -33,6 +33,7 @@ const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround
   return (
     <GalleryContext.Provider
       value={{
+        itemCount: children.length,
         item: {
           width,
           height,

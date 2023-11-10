@@ -6,6 +6,7 @@ import { GalleryItemView } from "../GalleryItem";
 export const GALLERY_NO_PROVIDER_FLAG = Symbol("GALLERY_NO_PROVIDER");
 
 export interface GalleryState {
+  itemCount: number;
   item: {
     width: number;
     height: number;
