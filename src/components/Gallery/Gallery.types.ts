@@ -1,15 +1,40 @@
-import GalleryItem from "../../core/GalleryItem";
 import { GroupProps } from "@react-three/fiber";
-import { HollowCylinderProps } from "../HollowCylinder";
 import { GroundProps } from "../Ground";
+import { ReactElement } from "react";
+import { GalleryItemView } from "../GalleryItem";
 
-type MinThreeItemsArray<T> = [T, T, T, ...T[]];
-export type GalleryItems = MinThreeItemsArray<GalleryItem>;
-export type GalleryItemProps = Omit<HollowCylinderProps, "items">;
+export const GALLERY_NO_PROVIDER_FLAG = Symbol("GALLERY_NO_PROVIDER");
+
+export interface GalleryState {
+  item: {
+    width: number;
+    height: number;
+    radialSegments: number;
+    heightSegments: number;
+    innerRadiusPercent: number;
+    sectionAngle: number;
+    outerRadius: number;
+    innerRadius: number;
+  };
+}
+
+type GalleryItemType = ReactElement<typeof GalleryItemView>;
+export type GalleryChildren = [
+  GalleryItemType,
+  GalleryItemType,
+  GalleryItemType,
+  ...[GalleryItemType],
+];
 
 export interface GalleryProps extends GroupProps {
-  items: GalleryItems;
-  item?: GalleryItemProps;
+  children: GalleryChildren;
   ground?: GroundProps;
   disableGround?: boolean;
+  item: {
+    width?: number;
+    height?: number;
+    radialSegments?: number;
+    heightSegments?: number;
+    innerRadiusPercent?: number;
+  };
 }

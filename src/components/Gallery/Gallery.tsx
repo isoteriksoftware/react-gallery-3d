@@ -1,10 +1,13 @@
-import { GalleryProps } from "./Gallery.types";
-import React, { useLayoutEffect } from "react";
-import { Ground } from "../Ground";
-import { HollowCylinder } from "../HollowCylinder";
-import { VideoItem } from "../../core";
+import React, { useMemo } from "react";
+import GalleryContext from "./GalleryContext";
+import { GalleryProps, Ground } from "react-gallery-3d";
+import GalleryItemContext from "../GalleryItem/GalleryItemContext";
 
-const Gallery: React.FC<GalleryProps> = ({ items, item, ground, disableGround, ...rest }) => {
+const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround, ...rest }) => {
+  if (children.length < 3) {
+    throw new Error("At least 3 items are required");
+  }
+
   const {
     width = 120,
     height = 50,
@@ -13,27 +16,42 @@ const Gallery: React.FC<GalleryProps> = ({ items, item, ground, disableGround, .
     innerRadiusPercent = 0.99,
   } = item || {};
 
-  useLayoutEffect(() => {
-    // Play all videos having autoplay enabled
-    items.forEach((item) => {
-      if (item instanceof VideoItem && item.getAutoplay()) {
-        item.getVideo()?.play();
-      }
-    });
-  }, [items]);
+  const { sectionAngle, outerRadius, innerRadius } = useMemo(() => {
+    const sides = children.length;
+    const sectionAngle = (2 * Math.PI) / sides;
+    const outerRadius = width / 2;
+    const innerRadius = outerRadius * innerRadiusPercent;
+
+    return {
+      sectionAngle,
+      outerRadius,
+      innerRadius,
+    };
+  }, [children]);
 
   return (
-    <group position={[0, 0, 0]} {...rest}>
-      <HollowCylinder
-        width={width}
-        height={height}
-        radialSegments={radialSegments}
-        heightSegments={heightSegments}
-        innerRadiusPercent={innerRadiusPercent}
-        items={items}
-      />
+    <GalleryContext.Provider
+      value={{
+        item: {
+          width,
+          height,
+          radialSegments,
+          heightSegments,
+          innerRadiusPercent,
+          innerRadius,
+          outerRadius,
+          sectionAngle,
+        },
+      }}
+    >
+      <group position={[0, 0, 0]} {...rest}>
+        {children.map((child, index) => (
+          <GalleryItemContext.Provider value={index}>{child}</GalleryItemContext.Provider>
+        ))}
+      </group>
+
       {!disableGround && <Ground position={[0, -height / 2, 0]} {...ground} />}
-    </group>
+    </GalleryContext.Provider>
   );
 };
 

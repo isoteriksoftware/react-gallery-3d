@@ -2,13 +2,11 @@ import React, { useMemo, Suspense } from "react";
 import { GallerySceneProps } from "./GalleryScene.types";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Gallery } from "../Gallery";
 import { Color } from "three";
 
 const GalleryScene: React.FC<GallerySceneProps> = ({
   backgroundColor = "#000000",
   fogColor = "#000000",
-  gallery,
   orbitControls,
   children,
   disableControls,
@@ -38,7 +36,6 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
       {!disableFog && <fog attach="fog" color={fogColor} near={10} far={400} />}
 
       <Suspense fallback={null}>
-        <Gallery {...gallery} />
         {children}
 
         {!disableControls && (

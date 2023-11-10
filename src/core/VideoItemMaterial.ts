@@ -1,16 +1,13 @@
 import { DoubleSide, Material, MeshStandardMaterial, VideoTexture } from "three";
-import BaseGalleryItem from "./BaseGalleryItem";
-import { ViewRenderer } from "./types";
+import GalleryItemMaterial from "./GalleryItemMaterial";
 
-class VideoItem extends BaseGalleryItem {
+class VideoItemMaterial implements GalleryItemMaterial {
   protected readonly source: string;
   protected texture: VideoTexture | undefined;
   protected video: HTMLVideoElement | undefined;
   protected autoplay: boolean = true;
 
-  constructor(source: string, viewRenderer?: ViewRenderer, autoplay: boolean = true) {
-    super(viewRenderer);
-
+  constructor(source: string, autoplay: boolean = true) {
     this.source = source;
     this.autoplay = autoplay;
   }
@@ -26,7 +23,7 @@ class VideoItem extends BaseGalleryItem {
     }
   }
 
-  generateMaterial(): Material | Material[] {
+  generate(): Material | Material[] {
     this.initVideo();
 
     return new MeshStandardMaterial({
@@ -52,4 +49,4 @@ class VideoItem extends BaseGalleryItem {
   }
 }
 
-export default VideoItem;
+export default VideoItemMaterial;

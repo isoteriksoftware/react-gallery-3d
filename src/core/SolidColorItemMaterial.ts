@@ -1,13 +1,11 @@
 import { MeshStandardMaterial, Color, Material } from "three";
-import BaseGalleryItem from "./BaseGalleryItem";
-import { ViewRenderer } from "./types";
+import GalleryItemMaterial from "./GalleryItemMaterial";
 
-class SolidColorItem extends BaseGalleryItem {
+class SolidColorItemMaterial implements GalleryItemMaterial {
   protected readonly color: Color | string;
   protected readonly finalColor: Color;
 
-  constructor(color: Color | string, viewRenderer?: ViewRenderer) {
-    super(viewRenderer);
+  constructor(color: Color | string) {
     this.color = color;
 
     if (typeof color === "string") {
@@ -17,7 +15,7 @@ class SolidColorItem extends BaseGalleryItem {
     }
   }
 
-  generateMaterial(): Material | Material[] {
+  generate(): Material | Material[] {
     return new MeshStandardMaterial({
       color: this.finalColor,
       polygonOffset: true,
@@ -27,4 +25,4 @@ class SolidColorItem extends BaseGalleryItem {
   }
 }
 
-export default SolidColorItem;
+export default SolidColorItemMaterial;

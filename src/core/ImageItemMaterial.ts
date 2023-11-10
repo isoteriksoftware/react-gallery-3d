@@ -1,14 +1,11 @@
 import { Texture, MeshStandardMaterial, Material, DoubleSide, TextureLoader } from "three";
-import BaseGalleryItem from "./BaseGalleryItem";
-import { ViewRenderer } from "./types";
+import GalleryItemMaterial from "./GalleryItemMaterial";
 
-class ImageItem extends BaseGalleryItem {
+class ImageItemMaterial implements GalleryItemMaterial {
   protected readonly url: string | undefined;
   protected texture: Texture | undefined;
 
-  constructor(urlOrTexture: string | Texture, viewRenderer?: ViewRenderer) {
-    super(viewRenderer);
-
+  constructor(urlOrTexture: string | Texture) {
     if (typeof urlOrTexture === "string") {
       this.url = urlOrTexture;
     } else {
@@ -22,7 +19,7 @@ class ImageItem extends BaseGalleryItem {
     }
   }
 
-  generateMaterial(): Material | Material[] {
+  generate(): Material | Material[] {
     this.initTexture();
 
     return new MeshStandardMaterial({
@@ -36,4 +33,4 @@ class ImageItem extends BaseGalleryItem {
   }
 }
 
-export default ImageItem;
+export default ImageItemMaterial;
