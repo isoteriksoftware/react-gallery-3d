@@ -23,6 +23,7 @@ export interface GalleryState {
     sectionAngle: number;
     outerRadius: number;
     innerRadius: number;
+    itemIndex?: number;
   };
 }
 

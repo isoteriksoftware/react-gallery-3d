@@ -53,7 +53,12 @@ const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround
           }
 
           return (
-            <GalleryItemContext.Provider key={index} value={index}>
+            <GalleryItemContext.Provider
+              key={index}
+              value={{
+                itemIndex: index,
+              }}
+            >
               {child}
             </GalleryItemContext.Provider>
           );
