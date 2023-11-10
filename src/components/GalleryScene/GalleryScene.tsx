@@ -13,6 +13,7 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
   children,
   disableControls,
   disableFog,
+  disableEnvironment,
   ...rest
 }) => {
   const {
@@ -53,7 +54,7 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
           />
         )}
 
-        <Environment preset="sunset" />
+        {!disableEnvironment && <Environment preset="sunset" />}
       </Suspense>
     </Canvas>
   );

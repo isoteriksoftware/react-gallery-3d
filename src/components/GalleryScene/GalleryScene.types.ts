@@ -11,4 +11,5 @@ export type GallerySceneProps = Omit<CanvasProps, "children"> & {
   children?: ReactNode;
   disableControls?: boolean;
   disableFog?: boolean;
+  disableEnvironment?: boolean;
 };
