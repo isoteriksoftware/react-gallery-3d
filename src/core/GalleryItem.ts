@@ -9,7 +9,7 @@ interface GalleryItem {
     cylinderProps: HollowCylinderProps,
   ) => Material | Material[];
 
-  renderView: (cylinderProps: ViewRendererProps) => ReactNode;
+  renderView: (viewRendererProps: ViewRendererProps) => ReactNode;
 }
 
 export default GalleryItem;
