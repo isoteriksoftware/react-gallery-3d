@@ -28,6 +28,18 @@ export default defineConfig((configEnv) => ({
     },
     rollupOptions: {
       external: [...Object.keys(packageJson.peerDependencies)],
+      output: {
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+          three: "THREE",
+          "@react-three/fiber": "ReactThreeFiber",
+          "@react-three/drei": "Drei",
+        },
+      },
     },
+  },
+  optimizeDeps: {
+    exclude: ["react", "react-dom", "three", "@react-three/fiber", "@react-three/drei"],
   },
 }));

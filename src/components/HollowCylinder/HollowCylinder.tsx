@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { Fragment, useMemo } from "react";
 import { HollowCylinderProps } from "./HollowCylinder.types";
 import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
@@ -24,7 +24,7 @@ const HollowCylinder: React.FC<HollowCylinderProps> = ({
     [outerRadius, innerRadiusPercent],
   );
 
-  const meshes = useMemo(() => {
+  const elements = useMemo(() => {
     const sides = items.length;
     const props = {
       width,
@@ -33,6 +33,19 @@ const HollowCylinder: React.FC<HollowCylinderProps> = ({
       heightSegments,
       innerRadiusPercent,
       items,
+    };
+
+    const rendererProps: ViewRendererProps = {
+      width: width!,
+      height: height!,
+      radialSegments: radialSegments!,
+      heightSegments: heightSegments!,
+      innerRadiusPercent: innerRadiusPercent!,
+      items: items!,
+      index: 0,
+      sectionAngle,
+      outerRadius,
+      innerRadius,
     };
 
     return Array.from({ length: sides }, (_, index) => {
@@ -64,38 +77,20 @@ const HollowCylinder: React.FC<HollowCylinderProps> = ({
       // Perform CSG subtraction to hollow out the segment
       const finalMesh = CSG.subtract(outerMesh, innerMesh);
       finalMesh.material = items[index].generateMaterial(finalMesh.geometry, props);
+      rendererProps.index = index;
 
-      return finalMesh;
+      return (
+        <primitive object={finalMesh} position={[0, 0, 0]}>
+          {items[index].renderView(rendererProps)}
+        </primitive>
+      );
     });
   }, [items, width, innerRadiusPercent, height, radialSegments, heightSegments]);
 
-  const cachedProps = useMemo(() => {
-    const props: ViewRendererProps = {
-      width: width!,
-      height: height!,
-      radialSegments: radialSegments!,
-      heightSegments: heightSegments!,
-      innerRadiusPercent: innerRadiusPercent!,
-      items: items!,
-      index: 0,
-      sectionAngle,
-      outerRadius,
-      innerRadius,
-    };
-
-    return props;
-  }, [width, height, radialSegments, heightSegments, innerRadiusPercent, items]);
-
   return (
     <group position={[0, 0, 0]} {...rest}>
-      {meshes.map((mesh, index) => {
-        cachedProps.index = index;
-
-        return (
-          <primitive key={index} object={mesh} position={[0, 0, 0]}>
-            {items[index].renderView(cachedProps)}
-          </primitive>
-        );
+      {elements.map((element, index) => {
+        return <Fragment key={index}>{element}</Fragment>;
       })}
     </group>
   );
