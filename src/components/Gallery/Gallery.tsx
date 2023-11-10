@@ -28,7 +28,7 @@ const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround
       outerRadius,
       innerRadius,
     };
-  }, [children, width]);
+  }, [children, width, innerRadiusPercent]);
 
   return (
     <GalleryContext.Provider
