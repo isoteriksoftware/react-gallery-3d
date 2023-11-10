@@ -13,14 +13,18 @@ class VideoItemMaterial implements GalleryItemMaterial {
   }
 
   protected initVideo(): void {
-    if (!this.texture) {
+    if (!this.video) {
       this.video = document.createElement("video");
-      this.video.src = this.source;
-      this.video.loop = true;
-      this.video.muted = true;
+    }
 
+    if (!this.texture) {
       this.texture = new VideoTexture(this.video);
     }
+
+    this.video.src = this.source;
+    this.video.loop = true;
+    this.video.muted = true;
+    this.video.load();
   }
 
   generate(): Material | Material[] {
