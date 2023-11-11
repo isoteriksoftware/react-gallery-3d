@@ -5,9 +5,11 @@ class VideoItemMaterial implements GalleryItemMaterial {
   protected readonly source: string;
   protected texture: VideoTexture | undefined;
   protected video: HTMLVideoElement | undefined;
+  protected crossOrigin: string | undefined;
 
-  constructor(source: string) {
+  constructor(source: string, crossOrigin?: string) {
     this.source = source;
+    this.crossOrigin = crossOrigin;
   }
 
   protected initVideo(): void {
@@ -20,8 +22,10 @@ class VideoItemMaterial implements GalleryItemMaterial {
     }
 
     this.video.src = this.source;
-    this.video.loop = true;
-    this.video.muted = true;
+    if (this.crossOrigin) {
+      this.video.crossOrigin = this.crossOrigin;
+    }
+
     this.video.load();
   }
 

@@ -1,18 +1,24 @@
 import React, { useMemo } from "react";
 import { ImageItemProps } from "./GalleryItem.types";
-import { ImageItemMaterial } from "../../core";
+import { ImageItemMaterial, GalleryItemMaterial } from "../../core";
 import GalleryItem from "./GalleryItem";
 
-const ImageItem: React.FC<ImageItemProps> = ({ src, texture, children }) => {
-  if (!src && !texture) {
-    throw new Error("Either src or texture must be provided");
-  }
+const ImageItem = React.forwardRef<GalleryItemMaterial, ImageItemProps>(
+  ({ src, texture, children }, ref) => {
+    if (!src && !texture) {
+      throw new Error("Either src or texture must be provided");
+    }
 
-  const material = useMemo(() => {
-    return new ImageItemMaterial(texture ?? src!);
-  }, [src, texture]);
+    const material = useMemo(() => {
+      return new ImageItemMaterial(texture ?? src!);
+    }, [src, texture]);
 
-  return <GalleryItem material={material}>{children}</GalleryItem>;
-};
+    return (
+      <GalleryItem material={material} ref={ref}>
+        {children}
+      </GalleryItem>
+    );
+  },
+);
 
 export default ImageItem;
