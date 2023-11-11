@@ -24,4 +24,7 @@ export type ImageItemProps = PropsWithChildren<{
 export type VideoItemProps = PropsWithChildren<{
   src: string;
   autoplay?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  crossOrigin?: "anonymous" | "use-credentials" | "" | null;
 }>;
