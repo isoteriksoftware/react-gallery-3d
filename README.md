@@ -127,7 +127,7 @@ The `ImageItem` component is used to render an image in the gallery. It is respo
 
 ## VideoItem
 ```tsx
-<VideoItem src="https://www.w3schools.com/html/mov_bbb.mp4" />
+<VideoItem src="./video.mp4" />
 ```
 The `VideoItem` component is used to render a video in the gallery. It is responsible for rendering the item's geometry and material. It uses the `VideoItemMaterial` component to render the item's material.
 
