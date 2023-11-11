@@ -1,4 +1,4 @@
-![Preview](https://github.com/isoteriksoftware/react-gallery-3d/assets/50753501/92fd536b-a196-4de9-8dda-8dcb2ada1ff0)
+![Preview](https://github.com/isoteriksoftware/react-gallery-3d/assets/50753501/109d9120-07f0-46fd-b43e-21a127979e25)
 
 [![Version](https://img.shields.io/npm/v/react-gallery-3d?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/react-gallery-3d)
 [![Downloads](https://img.shields.io/npm/dt/react-gallery-3d.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/react-gallery-3d)
