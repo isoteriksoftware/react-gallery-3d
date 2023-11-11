@@ -6,7 +6,7 @@ import { Ground } from "../Ground";
 
 const Gallery: React.FC<GalleryProps> = ({ children, item, ground, disableGround, ...rest }) => {
   if (children.length < 3) {
-    throw new Error("At least 3 items are required");
+    throw new Error("At least 3 Gallery Items are required");
   }
 
   const {

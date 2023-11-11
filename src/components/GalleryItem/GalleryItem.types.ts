@@ -23,4 +23,5 @@ export type ImageItemProps = PropsWithChildren<{
 
 export type VideoItemProps = PropsWithChildren<{
   src: string;
+  autoplay?: boolean;
 }>;

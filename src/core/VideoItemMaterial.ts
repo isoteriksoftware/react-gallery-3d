@@ -5,11 +5,9 @@ class VideoItemMaterial implements GalleryItemMaterial {
   protected readonly source: string;
   protected texture: VideoTexture | undefined;
   protected video: HTMLVideoElement | undefined;
-  protected autoplay: boolean = true;
 
-  constructor(source: string, autoplay: boolean = true) {
+  constructor(source: string) {
     this.source = source;
-    this.autoplay = autoplay;
   }
 
   protected initVideo(): void {
@@ -42,14 +40,6 @@ class VideoItemMaterial implements GalleryItemMaterial {
 
   getVideo(): HTMLVideoElement | undefined {
     return this.video;
-  }
-
-  setAutoplay(autoplay: boolean): void {
-    this.autoplay = autoplay;
-  }
-
-  getAutoplay(): boolean {
-    return this.autoplay;
   }
 }
 
