@@ -35,7 +35,7 @@ const App = () => {
             <Gallery>
                 <SolidColorItem color="#ff0000" />
                 <ImageItem src="https://picsum.photos/200/300" />
-                <VideoItem src="https://www.w3schools.com/html/mov_bbb.mp4" />
+                <VideoItem src="./video.mp4" />
             </Gallery>
         </GalleryScene>
     );
