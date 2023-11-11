@@ -35,7 +35,10 @@ const App = () => {
             <Gallery>
                 <SolidColorItem color="#ff0000" />
                 <ImageItem src="https://picsum.photos/200/300" />
-                <VideoItem src="./video.mp4" />
+                <VideoItem
+                    src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                    crossOrigin="anonymous"
+                />
             </Gallery>
         </GalleryScene>
     );
@@ -208,7 +211,10 @@ The `GalleryItemMaterial` type is used to generate the three.js `Material` of a 
     <Gallery>
         <SolidColorItem color="#ff0000" />
         <ImageItem src="https://picsum.photos/200/300" />
-        <VideoItem src="https://www.w3schools.com/html/mov_bbb.mp4" />
+        <VideoItem
+          src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+          crossOrigin="anonymous"
+        />
     </Gallery>
 </GalleryScene>
 ```
