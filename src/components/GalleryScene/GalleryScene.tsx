@@ -6,12 +6,13 @@ import { Color } from "three";
 
 const GalleryScene: React.FC<GallerySceneProps> = ({
   backgroundColor = "#000000",
-  fogColor = "#000000",
   orbitControls,
   children,
   disableControls,
   disableFog,
   disableEnvironment,
+  fog,
+  environment,
   ...rest
 }) => {
   const {
@@ -23,6 +24,8 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
     ...restOrbitControls
   } = orbitControls || {};
 
+  const { color: fogColor = "#000000", near = 10, far = 400 } = fog || {};
+
   const background = useMemo(() => new Color(backgroundColor), [backgroundColor]);
 
   return (
@@ -33,7 +36,7 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
       scene={{ background: background }}
       {...rest}
     >
-      {!disableFog && <fog attach="fog" color={fogColor} near={10} far={400} />}
+      {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} />}
 
       <Suspense fallback={null}>
         {children}
@@ -51,7 +54,7 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
           />
         )}
 
-        {!disableEnvironment && <Environment preset="sunset" />}
+        {!disableEnvironment && <Environment preset="sunset" {...environment} />}
       </Suspense>
     </Canvas>
   );
