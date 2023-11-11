@@ -3,7 +3,8 @@
 [![Version](https://img.shields.io/npm/v/react-gallery-3d?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/react-gallery-3d)
 [![Downloads](https://img.shields.io/npm/dt/react-gallery-3d.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/react-gallery-3d)
 
-This library provides React components to create awesome 3D galleries. It supports rendering with solid colors, images, and videos, offering a wide range of possibilities for showcasing media in a 3D environment.
+This library provides React components to create awesome 3D galleries. It supports rendering with solid colors, images, and videos, offering a wide range of possibilities for showcasing media in a 3D environment.  
+
 Play with the [demo](https://react-gallery-3d-demo.vercel.app/) to see what you can do with this library.
 
 
