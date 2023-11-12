@@ -51,7 +51,7 @@ const Gallery = React.forwardRef<Group, GalleryProps>(
         <group ref={ref} {...rest}>
           {children.map((child, index) => {
             if (!AllowedGalleryItemTypes.includes(child.type)) {
-              throw new Error("One of the children of Gallery is not a valid GalleryItem.");
+              return child;
             }
 
             return (
