@@ -2,7 +2,7 @@ import { useContext } from "react";
 import GalleryContext from "./GalleryContext";
 import { GALLERY_NO_PROVIDER_FLAG } from "./Gallery.types";
 import GalleryItemContext from "../GalleryItem/GalleryItemContext";
-import { GALLERY_ITEM_NO_PROVIDER_FLAG } from "../GalleryItem/GalleryItem.types";
+import { GALLERY_ITEM_NO_PROVIDER_FLAG } from "../GalleryItem";
 
 const useGallery = () => {
   const data = useContext(GalleryContext);

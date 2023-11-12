@@ -24,7 +24,7 @@ module.exports = {
         "react/react-in-jsx-scope":"off",
         "no-console": "error",
         "no-alert": "error",
-        "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/exhaustive-deps": "error",
         "react/prop-types": 0,
         "react/display-name": 0,
         "@typescript-eslint/no-empty-function":"error",

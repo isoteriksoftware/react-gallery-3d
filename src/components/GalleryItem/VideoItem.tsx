@@ -27,7 +27,7 @@ const VideoItem: React.FC<VideoItemProps> = ({
         video.play();
       }
     }
-  }, [material]);
+  }, [autoplay, loop, material, muted]);
 
   return (
     <GalleryItem itemMaterial={material} {...rest}>
