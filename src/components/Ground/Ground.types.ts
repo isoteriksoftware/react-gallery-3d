@@ -1,7 +1,7 @@
 import { MeshProps } from "@react-three/fiber";
 import { Texture } from "three";
 
-export interface GroundProps extends MeshProps {
+export interface GroundProps extends Omit<MeshProps, "ref"> {
   width?: number;
   height?: number;
   reflectorMaterial?: {

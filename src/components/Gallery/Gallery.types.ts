@@ -39,7 +39,7 @@ export type GalleryChildren =
   | [GalleryItemType, GalleryItemType, GalleryItemType]
   | [GalleryItemType, GalleryItemType, GalleryItemType, ...GalleryItemType[]];
 
-export interface GalleryProps extends Omit<GroupProps, "children"> {
+export interface GalleryProps extends Omit<GroupProps, "children" | "ref"> {
   children: GalleryChildren;
   ground?: GroundProps;
   disableGround?: boolean;
