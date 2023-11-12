@@ -7,6 +7,7 @@ import { Vector3 } from "three";
  * @param {number} itemIndex - The index of the item in the gallery.
  * @param {number} outerRadius - The outer radius of the item.
  * @param {number} sectionAngle - The angular size of the item in radians.
+ * @param {number} [objectOffset=0] - The offset distance from the item's surface to the object's center. Defaults to 0.
  * @param {Vector3} [position] - Optional vector to be filled with the calculated position.
  * @param {Vector3} [orientation] - Optional vector to be filled with the calculated orientation.
  * @returns {{ position: Vector3, orientation: Vector3 }} - The position and orientation vectors.
@@ -15,6 +16,7 @@ export const calculatePlacementOnGalleryItem = (
   itemIndex: number,
   outerRadius: number,
   sectionAngle: number,
+  objectOffset: number = 0,
   position: Vector3 = new Vector3(),
   orientation: Vector3 = new Vector3(),
 ): { position: Vector3; orientation: Vector3 } => {
@@ -26,6 +28,9 @@ export const calculatePlacementOnGalleryItem = (
 
   // The lookAt vector is the normalized position vector
   orientation.set(position.x, position.y, position.z).normalize();
+
+  // Adjust the position by the objectOffset along the orientation vector
+  position.addScaledVector(orientation, objectOffset);
 
   return { position, orientation };
 };
