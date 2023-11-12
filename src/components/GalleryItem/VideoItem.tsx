@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useMemo } from "react";
-import { VideoItemProps } from "./GalleryItem.types";
-import { VideoItemMaterial, GalleryItemMaterial } from "../../core";
+import { GalleryItemRefData, VideoItemProps } from "./GalleryItem.types";
+import { VideoItemMaterial } from "../../core";
 import GalleryItem from "./GalleryItem";
 
-const VideoItem = React.forwardRef<GalleryItemMaterial, VideoItemProps>(
+const VideoItem = React.forwardRef<GalleryItemRefData, VideoItemProps>(
   ({ src, children, autoplay = true, muted = true, loop = true, crossOrigin }, ref) => {
     const material = useMemo(() => {
       return new VideoItemMaterial(src, crossOrigin ?? undefined);
@@ -23,7 +23,7 @@ const VideoItem = React.forwardRef<GalleryItemMaterial, VideoItemProps>(
     }, [material]);
 
     return (
-      <GalleryItem material={material} ref={ref}>
+      <GalleryItem itemMaterial={material} ref={ref}>
         {children}
       </GalleryItem>
     );

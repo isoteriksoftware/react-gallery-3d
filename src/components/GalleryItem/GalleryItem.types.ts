@@ -1,6 +1,6 @@
 import GalleryItemMaterial from "../../core/GalleryItemMaterial";
 import { PropsWithChildren } from "react";
-import { Color, Texture } from "three";
+import { Color, Material, Mesh, Texture } from "three";
 
 export const GALLERY_ITEM_NO_PROVIDER_FLAG = Symbol("GALLERY_ITEM_NO_PROVIDER");
 
@@ -9,7 +9,7 @@ export interface GalleryItemState {
 }
 
 export type GalleryItemProps = PropsWithChildren<{
-  material: GalleryItemMaterial;
+  itemMaterial: GalleryItemMaterial;
 }>;
 
 export type SolidColorItemProps = PropsWithChildren<{
@@ -28,3 +28,9 @@ export type VideoItemProps = PropsWithChildren<{
   loop?: boolean;
   crossOrigin?: "anonymous" | "use-credentials" | "" | null;
 }>;
+
+export interface GalleryItemRefData {
+  itemMaterial: GalleryItemMaterial;
+  mesh: Mesh;
+  material: Material | Material[];
+}

@@ -1,13 +1,16 @@
-import { GALLERY_ITEM_NO_PROVIDER_FLAG, GalleryItemProps } from "./GalleryItem.types";
+import {
+  GALLERY_ITEM_NO_PROVIDER_FLAG,
+  GalleryItemProps,
+  GalleryItemRefData,
+} from "./GalleryItem.types";
 import React, { useContext, useEffect, useMemo } from "react";
 import useGallery from "../Gallery/useGallery";
 import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
 import GalleryItemContext from "./GalleryItemContext";
-import GalleryItemMaterial from "../../core/GalleryItemMaterial";
 
-const GalleryItem = React.forwardRef<GalleryItemMaterial, GalleryItemProps>(
-  ({ material, children }, ref) => {
+const GalleryItem = React.forwardRef<GalleryItemRefData, GalleryItemProps>(
+  ({ itemMaterial, children }, ref) => {
     const itemData = useContext(GalleryItemContext);
     if (itemData === GALLERY_ITEM_NO_PROVIDER_FLAG) {
       throw new Error("GalleryItem must be a child of Gallery");
@@ -17,14 +20,8 @@ const GalleryItem = React.forwardRef<GalleryItemMaterial, GalleryItemProps>(
       useGallery().item;
 
     const generatedMaterial = useMemo(() => {
-      return material.generate();
-    }, [material]);
-
-    useEffect(() => {
-      if (ref && typeof ref === "object" && "current" in ref) {
-        (ref as React.MutableRefObject<GalleryItemMaterial>).current = material;
-      }
-    }, [material]);
+      return itemMaterial.generate();
+    }, [itemMaterial]);
 
     const mesh = useMemo(() => {
       const outerGeometry = new CylinderGeometry(
@@ -64,9 +61,19 @@ const GalleryItem = React.forwardRef<GalleryItemMaterial, GalleryItemProps>(
       heightSegments,
       sectionAngle,
       innerRadius,
-      material,
+      itemMaterial,
       itemData.itemIndex,
     ]);
+
+    useEffect(() => {
+      if (ref && typeof ref === "object" && "current" in ref) {
+        (ref as React.MutableRefObject<GalleryItemRefData>).current = {
+          itemMaterial,
+          mesh,
+          material: generatedMaterial,
+        };
+      }
+    }, [itemMaterial]);
 
     return <primitive object={mesh}>{children}</primitive>;
   },

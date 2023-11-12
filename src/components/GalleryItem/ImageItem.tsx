@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
-import { ImageItemProps } from "./GalleryItem.types";
-import { ImageItemMaterial, GalleryItemMaterial } from "../../core";
+import { GalleryItemRefData, ImageItemProps } from "./GalleryItem.types";
+import { ImageItemMaterial } from "../../core";
 import GalleryItem from "./GalleryItem";
 
-const ImageItem = React.forwardRef<GalleryItemMaterial, ImageItemProps>(
+const ImageItem = React.forwardRef<GalleryItemRefData, ImageItemProps>(
   ({ src, texture, children }, ref) => {
     if (!src && !texture) {
       throw new Error("Either src or texture must be provided");
@@ -14,7 +14,7 @@ const ImageItem = React.forwardRef<GalleryItemMaterial, ImageItemProps>(
     }, [src, texture]);
 
     return (
-      <GalleryItem material={material} ref={ref}>
+      <GalleryItem itemMaterial={material} ref={ref}>
         {children}
       </GalleryItem>
     );

@@ -1,16 +1,16 @@
 import React, { useMemo } from "react";
-import { SolidColorItemProps } from "./GalleryItem.types";
-import { SolidColorItemMaterial, GalleryItemMaterial } from "../../core";
+import { GalleryItemRefData, SolidColorItemProps } from "./GalleryItem.types";
+import { SolidColorItemMaterial } from "../../core";
 import GalleryItem from "./GalleryItem";
 
-const SolidColorItem = React.forwardRef<GalleryItemMaterial, SolidColorItemProps>(
+const SolidColorItem = React.forwardRef<GalleryItemRefData, SolidColorItemProps>(
   ({ color, children }, ref) => {
     const material = useMemo(() => {
       return new SolidColorItemMaterial(color);
     }, [color]);
 
     return (
-      <GalleryItem material={material} ref={ref}>
+      <GalleryItem itemMaterial={material} ref={ref}>
         {children}
       </GalleryItem>
     );
