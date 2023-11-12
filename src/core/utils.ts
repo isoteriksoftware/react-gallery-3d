@@ -27,7 +27,7 @@ export const calculatePlacementOnGalleryItem = (
   position.set(outerRadius * Math.cos(centerAngle), 0, outerRadius * Math.sin(centerAngle));
 
   // The lookAt vector is the normalized position vector
-  orientation.set(position.x, position.y, position.z).normalize();
+  orientation.set(-position.x, -position.y, -position.z).normalize();
 
   // Adjust the position by the objectOffset along the orientation vector
   position.addScaledVector(orientation, objectOffset);
