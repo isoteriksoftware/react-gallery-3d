@@ -32,6 +32,20 @@ const Gallery = React.forwardRef<Group, GalleryProps>(
       };
     }, [children, width, innerRadiusPercent]);
 
+    const validChildren = useMemo(() => {
+      return children.filter((child) => {
+        if (!AllowedGalleryItemTypes.includes(child.type)) {
+          if (Array.isArray(child)) {
+            return child.every((subChild) => {
+              return AllowedGalleryItemTypes.includes(subChild.type);
+            });
+          }
+        }
+
+        return true;
+      });
+    }, [children]);
+
     return (
       <GalleryContext.Provider
         value={{
@@ -49,11 +63,7 @@ const Gallery = React.forwardRef<Group, GalleryProps>(
         }}
       >
         <group ref={ref} {...rest}>
-          {children.map((child, index) => {
-            if (!AllowedGalleryItemTypes.includes(child.type)) {
-              return child;
-            }
-
+          {validChildren.map((child, index) => {
             return (
               <GalleryItemContext.Provider
                 key={index}
