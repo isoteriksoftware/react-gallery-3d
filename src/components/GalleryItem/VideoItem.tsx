@@ -1,33 +1,39 @@
 import React, { useLayoutEffect, useMemo } from "react";
-import { GalleryItemRefData, VideoItemProps } from "./GalleryItem.types";
+import { VideoItemProps } from "./GalleryItem.types";
 import { VideoItemMaterial } from "../../core";
 import GalleryItem from "./GalleryItem";
 
-const VideoItem = React.forwardRef<GalleryItemRefData, VideoItemProps>(
-  ({ src, children, autoplay = true, muted = true, loop = true, crossOrigin }, ref) => {
-    const material = useMemo(() => {
-      return new VideoItemMaterial(src, crossOrigin ?? undefined);
-    }, [src, crossOrigin]);
+const VideoItem: React.FC<VideoItemProps> = ({
+  src,
+  children,
+  autoplay = true,
+  muted = true,
+  loop = true,
+  crossOrigin,
+  ...rest
+}) => {
+  const material = useMemo(() => {
+    return new VideoItemMaterial(src, crossOrigin ?? undefined);
+  }, [src, crossOrigin]);
 
-    useLayoutEffect(() => {
-      if (material.getVideo()) {
-        const video = material.getVideo()!;
-        video.muted = muted;
-        video.loop = loop;
+  useLayoutEffect(() => {
+    if (material.getVideo()) {
+      const video = material.getVideo()!;
+      video.muted = muted;
+      video.loop = loop;
 
-        if (autoplay) {
-          // Play video if autoplay is enabled
-          video.play();
-        }
+      if (autoplay) {
+        // Play video if autoplay is enabled
+        video.play();
       }
-    }, [material]);
+    }
+  }, [material]);
 
-    return (
-      <GalleryItem itemMaterial={material} ref={ref}>
-        {children}
-      </GalleryItem>
-    );
-  },
-);
+  return (
+    <GalleryItem itemMaterial={material} {...rest}>
+      {children}
+    </GalleryItem>
+  );
+};
 
 export default VideoItem;

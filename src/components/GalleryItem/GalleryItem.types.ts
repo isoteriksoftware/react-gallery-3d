@@ -8,29 +8,30 @@ export interface GalleryItemState {
   itemIndex: number;
 }
 
+export interface GalleryItemInitData {
+  itemMaterial: GalleryItemMaterial;
+  mesh: Mesh;
+  material: Material | Material[];
+}
+
 export type GalleryItemProps = PropsWithChildren<{
   itemMaterial: GalleryItemMaterial;
+  onInit?: (data: GalleryItemInitData) => void;
 }>;
 
-export type SolidColorItemProps = PropsWithChildren<{
+export type SolidColorItemProps = Omit<GalleryItemProps, "itemMaterial"> & {
   color: string | Color;
-}>;
+};
 
-export type ImageItemProps = PropsWithChildren<{
+export type ImageItemProps = Omit<GalleryItemProps, "itemMaterial"> & {
   src?: string;
   texture?: Texture;
-}>;
+};
 
-export type VideoItemProps = PropsWithChildren<{
+export type VideoItemProps = Omit<GalleryItemProps, "itemMaterial"> & {
   src: string;
   autoplay?: boolean;
   muted?: boolean;
   loop?: boolean;
   crossOrigin?: "anonymous" | "use-credentials" | "" | null;
-}>;
-
-export interface GalleryItemRefData {
-  itemMaterial: GalleryItemMaterial;
-  mesh: Mesh;
-  material: Material | Material[];
-}
+};

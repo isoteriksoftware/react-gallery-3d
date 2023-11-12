@@ -24,10 +24,10 @@ module.exports = {
         "react/react-in-jsx-scope":"off",
         "no-console": "error",
         "no-alert": "error",
-        "react-hooks/exhaustive-deps": "off",
+        "react-hooks/exhaustive-deps": "warn",
         "react/prop-types": 0,
         "react/display-name": 0,
-        "@typescript-eslint/no-empty-function":"off",
+        "@typescript-eslint/no-empty-function":"error",
         "react/no-unknown-property":"off",
         "react/no-unescaped-entities ":"off",
         "padding-line-between-statements": "off"
