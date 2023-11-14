@@ -19,19 +19,6 @@ const Gallery = React.forwardRef<Group, GalleryProps>(
       innerRadiusPercent = 0.99,
     } = item || {};
 
-    const { sectionAngle, outerRadius, innerRadius } = useMemo(() => {
-      const sides = children.length;
-      const sectionAngle = (2 * Math.PI) / sides;
-      const outerRadius = width / 2;
-      const innerRadius = outerRadius * innerRadiusPercent;
-
-      return {
-        sectionAngle,
-        outerRadius,
-        innerRadius,
-      };
-    }, [children, width, innerRadiusPercent]);
-
     const validChildren = useMemo(() => {
       return children.filter((child) => {
         if (!AllowedGalleryItemTypes.includes(child.type)) {
@@ -45,6 +32,19 @@ const Gallery = React.forwardRef<Group, GalleryProps>(
         return true;
       });
     }, [children]);
+
+    const { sectionAngle, outerRadius, innerRadius } = useMemo(() => {
+      const sides = validChildren.length;
+      const sectionAngle = (2 * Math.PI) / sides;
+      const outerRadius = width / 2;
+      const innerRadius = outerRadius * innerRadiusPercent;
+
+      return {
+        sectionAngle,
+        outerRadius,
+        innerRadius,
+      };
+    }, [validChildren.length, width, innerRadiusPercent]);
 
     return (
       <GalleryContext.Provider
