@@ -4,7 +4,9 @@ import { Vector3 } from "three";
 import { calculatePlacementOnGalleryItem } from "react-gallery-3d";
 
 const usePlacementOnGalleryItem = (objectOffset: number = 0) => {
-  const { sectionAngle, outerRadius, itemIndex } = useGallery().item;
+  const { itemCount, item } = useGallery();
+  const { sectionAngle, outerRadius, itemIndex } = item;
+
   if (!itemIndex && itemIndex != 0) {
     throw new Error("usePlacementOnGalleryItem can only be used within a GalleryItem.");
   }
@@ -17,11 +19,12 @@ const usePlacementOnGalleryItem = (objectOffset: number = 0) => {
       itemIndex,
       outerRadius,
       sectionAngle,
+      itemCount,
       objectOffset,
       position,
       orientation,
     );
-  }, [sectionAngle, outerRadius, itemIndex, position, orientation, objectOffset]);
+  }, [sectionAngle, outerRadius, itemIndex, position, orientation, objectOffset, itemCount]);
 
   return { position, orientation };
 };
