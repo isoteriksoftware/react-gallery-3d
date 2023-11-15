@@ -36,9 +36,9 @@ export const calculatePlacementOnGalleryItem = (
 
   position.set(outerRadius * Math.cos(centerAngle), 0, outerRadius * Math.sin(centerAngle));
 
-  orientation.set(-Math.cos(centerAngle), 0, -Math.sin(centerAngle)).normalize();
+  orientation.set(Math.cos(centerAngle), 0, Math.sin(centerAngle)).normalize();
 
-  position.addScaledVector(orientation, -objectOffset);
+  position.addScaledVector(orientation, objectOffset);
 
   return { position, orientation };
 };
