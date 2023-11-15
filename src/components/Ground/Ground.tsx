@@ -21,6 +21,9 @@ const Ground = React.forwardRef<Mesh, GroundProps>(
     return (
       <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} {...rest}>
         <planeGeometry args={[width, height]} />
+        {disableReflector && (
+          <meshStandardMaterial color={color} metalness={metalness} roughness={roughness} />
+        )}
 
         {!disableReflector && (
           <MeshReflectorMaterial
