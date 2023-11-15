@@ -1,5 +1,5 @@
 import useGallery from "../Gallery/useGallery";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import { calculatePlacementOnGalleryItem } from "react-gallery-3d";
 
@@ -16,30 +16,28 @@ const usePlacementOnGalleryItem = (objectOffset: number = 0, itemAlignmentOffset
     throw new Error("usePlacementOnGalleryItem can only be used within a GalleryItem.");
   }
 
-  const position = useMemo(() => new Vector3(), []);
-  const orientation = useMemo(() => new Vector3(), []);
+  const [position, setPosition] = useState(new Vector3());
+  const [orientation, setOrientation] = useState(new Vector3());
 
   useEffect(() => {
-    calculatePlacementOnGalleryItem(
+    const { position: newPosition, orientation: newOrientation } = calculatePlacementOnGalleryItem(
       itemIndex,
       outerRadius,
       sectionAngle,
       itemCount,
       itemAlignmentOffset,
       objectOffset,
-      position,
-      orientation,
     );
-  }, [
-    sectionAngle,
-    outerRadius,
-    itemIndex,
-    position,
-    orientation,
-    objectOffset,
-    itemAlignmentOffset,
-    itemCount,
-  ]);
+
+    if (!position.equals(newPosition)) {
+      setPosition(newPosition);
+    }
+
+    if (!orientation.equals(newOrientation)) {
+      setOrientation(newOrientation);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionAngle, outerRadius, itemIndex, objectOffset, itemAlignmentOffset, itemCount]);
 
   return { position, orientation };
 };
