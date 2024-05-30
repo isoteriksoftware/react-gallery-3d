@@ -6,6 +6,7 @@ import { SolidColorItem, SolidColorItemProps } from "../SolidColorItem";
 import { ImageItem, ImageItemProps } from "../ImageItem";
 import { VideoItem, VideoItemProps } from "../VideoItem";
 import { TransparentItem, TransparentItemProps } from "../TransparentItem";
+import { ObjectItem, ObjectItemProps } from "../ObjectItem";
 
 export const GALLERY_NO_PROVIDER_FLAG = Symbol("GALLERY_NO_PROVIDER");
 
@@ -30,6 +31,7 @@ export const AllowedGalleryItemTypes = [
   ImageItem,
   VideoItem,
   TransparentItem,
+  ObjectItem,
 ];
 
 export type GalleryItemType =
@@ -37,7 +39,8 @@ export type GalleryItemType =
   | ReactElement<SolidColorItemProps, typeof SolidColorItem>
   | ReactElement<ImageItemProps, typeof ImageItem>
   | ReactElement<VideoItemProps, typeof VideoItem>
-  | ReactElement<TransparentItemProps, typeof TransparentItem>;
+  | ReactElement<TransparentItemProps, typeof TransparentItem>
+  | ReactElement<ObjectItemProps, typeof ObjectItem>;
 
 export type GalleryChildren = [
   GalleryItemType,

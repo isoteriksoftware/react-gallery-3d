@@ -6,3 +6,4 @@ export * from "./SolidColorItem";
 export * from "./ImageItem";
 export * from "./VideoItem";
 export * from "./TransparentItem";
+export * from "./ObjectItem";
