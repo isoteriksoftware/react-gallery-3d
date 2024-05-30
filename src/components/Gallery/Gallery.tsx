@@ -5,7 +5,7 @@ import { AllowedGalleryItemTypes, GalleryProps } from "./Gallery.types";
 import { Ground } from "../Ground";
 import { Group } from "three";
 
-const Gallery = React.forwardRef<Group, GalleryProps>(
+export const Gallery = React.forwardRef<Group, GalleryProps>(
   ({ children, item, ground, disableGround, ...rest }, ref) => {
     if (children.length < 3) {
       throw new Error("At least 3 Gallery Items are required");
@@ -49,7 +49,7 @@ const Gallery = React.forwardRef<Group, GalleryProps>(
     return (
       <GalleryContext.Provider
         value={{
-          itemCount: children.length,
+          itemCount: validChildren.length,
           item: {
             width,
             height,
@@ -82,5 +82,3 @@ const Gallery = React.forwardRef<Group, GalleryProps>(
     );
   },
 );
-
-export default Gallery;

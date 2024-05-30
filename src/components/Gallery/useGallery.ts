@@ -4,7 +4,7 @@ import { GALLERY_NO_PROVIDER_FLAG } from "./Gallery.types";
 import GalleryItemContext from "../GalleryItem/GalleryItemContext";
 import { GALLERY_ITEM_NO_PROVIDER_FLAG } from "../GalleryItem";
 
-const useGallery = () => {
+export const useGallery = () => {
   const data = useContext(GalleryContext);
 
   if (data === GALLERY_NO_PROVIDER_FLAG) {
@@ -18,5 +18,3 @@ const useGallery = () => {
 
   return data;
 };
-
-export default useGallery;

@@ -31,9 +31,12 @@ export type GalleryItemType =
   | ReactElement<ImageItemProps, typeof ImageItem>
   | ReactElement<VideoItemProps, typeof VideoItem>;
 
-export type GalleryChildren =
-  | [GalleryItemType, GalleryItemType, GalleryItemType]
-  | [GalleryItemType, GalleryItemType, GalleryItemType, ...GalleryItemType[]];
+export type GalleryChildren = [
+  GalleryItemType,
+  GalleryItemType,
+  GalleryItemType,
+  ...GalleryItemType[],
+];
 
 export interface GalleryProps extends Omit<GroupProps, "children" | "ref"> {
   children: GalleryChildren;

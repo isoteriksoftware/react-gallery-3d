@@ -1,6 +1,6 @@
 import { GALLERY_ITEM_NO_PROVIDER_FLAG, GalleryItemProps } from "./GalleryItem.types";
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
-import useGallery from "../Gallery/useGallery";
+import { useGallery } from "../Gallery";
 import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
 import GalleryItemContext from "./GalleryItemContext";

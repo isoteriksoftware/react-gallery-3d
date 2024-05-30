@@ -1,7 +1,7 @@
-import useGallery from "../Gallery/useGallery";
+import { useGallery } from "../Gallery";
 import { useEffect, useState } from "react";
 import { Vector3 } from "three";
-import { calculatePlacementOnGalleryItem } from "react-gallery-3d";
+import { calculatePlacementOnGalleryItem } from "../../core";
 
 /**
  * Calculates the position and orientation vectors for an object to be placed on a gallery item (cylinder segment).
