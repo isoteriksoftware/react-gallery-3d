@@ -11,7 +11,8 @@
     "lint:fix": "eslint --fix 'src/**/*.{jsx,ts,tsx}'",
     "preview": "vite preview",
     "format": "prettier --write src//**/*.{ts,tsx} --config ./.prettierrc",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "publish-local": "yarn link"
   },
   "husky": {
     "hooks": {
