@@ -50,11 +50,19 @@ export const useVideoMaterial = ({
     video.loop = loop;
     video.muted = muted;
 
-    video.src = src;
     if (crossOrigin) {
       video.crossOrigin = crossOrigin;
     }
   }, [crossOrigin, loop, muted, src, video]);
+
+  useEffect(() => {
+    video.src = src;
+
+    if (autoplay) {
+      video.muted = true; // Required for autoplay to work
+      video.play();
+    }
+  }, [autoplay, src, video]);
 
   useLayoutEffect(() => {
     if (autoplay) {
