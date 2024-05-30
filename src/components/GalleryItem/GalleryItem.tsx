@@ -48,23 +48,26 @@ const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
     }, [createCylinderGeometry, innerRadius]);
 
     const mesh = useMemo(() => {
+      innerMesh.geometry = innerGeometry;
+      outerMesh.geometry = outerGeometry;
+
       // Perform CSG subtraction to hollow out the segment
       return CSG.subtract(outerMesh, innerMesh);
-    }, [innerMesh, outerMesh]);
+    }, [innerGeometry, innerMesh, outerGeometry, outerMesh]);
 
     useEffect(() => {
       outerMesh.geometry = outerGeometry;
-      // eslint-disable-next-line
-    }, [outerGeometry]);
+    }, [outerGeometry, outerMesh]);
 
     useEffect(() => {
       innerMesh.geometry = innerGeometry;
       innerMesh.position.y = -0.01; // Offset to prevent z-fighting
-      // eslint-disable-next-line
-    }, [innerGeometry]);
+    }, [innerGeometry, innerMesh]);
 
     useEffect(() => {
-      mesh.material = generatedMaterial;
+      if (mesh) {
+        mesh.material = generatedMaterial;
+      }
     }, [generatedMaterial, mesh]);
 
     useEffect(() => {
@@ -78,7 +81,7 @@ const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
     }, [generatedMaterial, itemMaterial, mesh, onInit]);
 
     return (
-      <primitive ref={ref} object={mesh}>
+      <primitive object={mesh} ref={ref}>
         {children}
       </primitive>
     );
