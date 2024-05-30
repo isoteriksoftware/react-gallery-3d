@@ -1,31 +1,39 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { usePlacementOnGalleryItem } from "../GalleryItem";
-import { Mesh, Object3D } from "three";
+import { Mesh } from "three";
 import { ObjectItemProps } from "./ObjectItem.types";
 import { TransparentItem } from "react-gallery-3d";
 
 const ObjectRenderer = ({
   object,
   objectProps,
+  disableObjectRender,
   objectOffset = 0,
-}: Pick<ObjectItemProps, "object" | "objectProps" | "objectOffset">) => {
-  const objectRef = useRef<Object3D>(null!);
+}: Pick<ObjectItemProps, "object" | "objectProps" | "objectOffset" | "disableObjectRender">) => {
   const { position, orientation } = usePlacementOnGalleryItem(objectOffset);
 
   useEffect(() => {
-    const obj = objectRef.current;
-    obj.position.copy(position);
-    obj.lookAt(orientation);
-  }, [orientation, position]);
+    if (object) {
+      object.position.copy(position);
+      object.lookAt(orientation);
+    }
+  }, [object, orientation, position]);
 
-  return <primitive ref={objectRef} object={object} {...objectProps} />;
+  if (disableObjectRender || !object) return null;
+
+  return <primitive object={object} {...objectProps} />;
 };
 
 export const ObjectItem = React.forwardRef<Mesh, ObjectItemProps>(
-  ({ children, object, objectProps, objectOffset, ...rest }, ref) => {
+  ({ children, object, objectProps, objectOffset, disableObjectRender, ...rest }, ref) => {
     return (
       <TransparentItem ref={ref} {...rest}>
-        <ObjectRenderer object={object} objectProps={objectProps} objectOffset={objectOffset} />
+        <ObjectRenderer
+          object={object}
+          objectProps={objectProps}
+          objectOffset={objectOffset}
+          disableObjectRender={disableObjectRender}
+        />
 
         {children}
       </TransparentItem>
