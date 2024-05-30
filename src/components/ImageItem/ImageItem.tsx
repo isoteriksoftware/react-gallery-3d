@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
-import { ImageItemProps } from "./GalleryItem.types";
+import { ImageItemProps } from "./ImageItem.types";
 import { ImageItemMaterial } from "../../core";
-import GalleryItem from "./GalleryItem";
+import { GalleryItem } from "../GalleryItem";
 import { Mesh } from "three";
 
-const ImageItem = React.forwardRef<Mesh, ImageItemProps>(
+export const ImageItem = React.forwardRef<Mesh, ImageItemProps>(
   ({ src, texture, children, ...rest }, ref) => {
     if (!src && !texture) {
       throw new Error("Either src or texture must be provided");
@@ -21,5 +21,3 @@ const ImageItem = React.forwardRef<Mesh, ImageItemProps>(
     );
   },
 );
-
-export default ImageItem;

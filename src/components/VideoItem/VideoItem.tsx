@@ -1,10 +1,10 @@
 import React, { useLayoutEffect, useMemo } from "react";
-import { VideoItemProps } from "./GalleryItem.types";
+import { VideoItemProps } from "./VideoItem.types";
 import { VideoItemMaterial } from "../../core";
-import GalleryItem from "./GalleryItem";
+import { GalleryItem } from "../GalleryItem";
 import { Mesh } from "three";
 
-const VideoItem = React.forwardRef<Mesh, VideoItemProps>(
+export const VideoItem = React.forwardRef<Mesh, VideoItemProps>(
   ({ src, children, autoplay = true, muted = true, loop = true, crossOrigin, ...rest }, ref) => {
     const material = useMemo(() => {
       return new VideoItemMaterial(src, crossOrigin ?? undefined);
@@ -30,5 +30,3 @@ const VideoItem = React.forwardRef<Mesh, VideoItemProps>(
     );
   },
 );
-
-export default VideoItem;

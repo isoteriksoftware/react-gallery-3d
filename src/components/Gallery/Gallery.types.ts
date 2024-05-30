@@ -1,14 +1,10 @@
 import { GroupProps } from "@react-three/fiber";
 import { GroundProps } from "../Ground";
 import { ReactElement } from "react";
-import { ImageItem, SolidColorItem, VideoItem } from "../GalleryItem";
-import GalleryItem from "../GalleryItem/GalleryItem";
-import {
-  GalleryItemProps,
-  ImageItemProps,
-  SolidColorItemProps,
-  VideoItemProps,
-} from "../GalleryItem/GalleryItem.types";
+import { GalleryItem, GalleryItemProps } from "../GalleryItem";
+import { SolidColorItem, SolidColorItemProps } from "../SolidColorItem";
+import { ImageItem, ImageItemProps } from "../ImageItem";
+import { VideoItem, VideoItemProps } from "../VideoItem";
 
 export const GALLERY_NO_PROVIDER_FLAG = Symbol("GALLERY_NO_PROVIDER");
 

@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
-import { SolidColorItemProps } from "./GalleryItem.types";
+import { SolidColorItemProps } from "./SolidColorItem.types";
 import { SolidColorItemMaterial } from "../../core";
-import GalleryItem from "./GalleryItem";
+import { GalleryItem } from "../GalleryItem";
 import { Mesh } from "three";
 
-const SolidColorItem = React.forwardRef<Mesh, SolidColorItemProps>(
+export const SolidColorItem = React.forwardRef<Mesh, SolidColorItemProps>(
   ({ color, children, ...rest }, ref) => {
     const material = useMemo(() => {
       return new SolidColorItemMaterial(color);
@@ -17,5 +17,3 @@ const SolidColorItem = React.forwardRef<Mesh, SolidColorItemProps>(
     );
   },
 );
-
-export default SolidColorItem;

@@ -5,7 +5,7 @@ import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
 import GalleryItemContext from "./GalleryItemContext";
 
-const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
+export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
   ({ itemMaterial, children, onInit }, ref) => {
     const itemData = useContext(GalleryItemContext);
     if (itemData === GALLERY_ITEM_NO_PROVIDER_FLAG) {
@@ -87,5 +87,3 @@ const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
     );
   },
 );
-
-export default GalleryItem;

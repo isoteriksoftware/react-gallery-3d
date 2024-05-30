@@ -8,7 +8,10 @@ import { calculatePlacementOnGalleryItem } from "react-gallery-3d";
  * @param objectOffset - The offset distance from the item's surface to the object's center.
  * @param itemAlignmentOffset - An optional angular offset to adjust the alignment
  */
-const usePlacementOnGalleryItem = (objectOffset: number = 0, itemAlignmentOffset?: number) => {
+export const usePlacementOnGalleryItem = (
+  objectOffset: number = 0,
+  itemAlignmentOffset?: number,
+) => {
   const { item, itemCount } = useGallery();
   const { sectionAngle, outerRadius, itemIndex } = item;
 
@@ -41,5 +44,3 @@ const usePlacementOnGalleryItem = (objectOffset: number = 0, itemAlignmentOffset
 
   return { position, orientation };
 };
-
-export default usePlacementOnGalleryItem;
