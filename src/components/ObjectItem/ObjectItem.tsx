@@ -9,8 +9,12 @@ const ObjectRenderer = ({
   objectProps,
   disableObjectRender,
   objectOffset = 0,
-}: Pick<ObjectItemProps, "object" | "objectProps" | "objectOffset" | "disableObjectRender">) => {
-  const { position, orientation } = usePlacementOnGalleryItem(objectOffset);
+  objectAlignmentOffset,
+}: Pick<
+  ObjectItemProps,
+  "object" | "objectProps" | "objectOffset" | "objectAlignmentOffset" | "disableObjectRender"
+>) => {
+  const { position, orientation } = usePlacementOnGalleryItem(objectOffset, objectAlignmentOffset);
 
   useEffect(() => {
     if (object) {
@@ -25,13 +29,25 @@ const ObjectRenderer = ({
 };
 
 export const ObjectItem = React.forwardRef<Mesh, ObjectItemProps>(
-  ({ children, object, objectProps, objectOffset, disableObjectRender, ...rest }, ref) => {
+  (
+    {
+      children,
+      object,
+      objectProps,
+      objectOffset,
+      disableObjectRender,
+      objectAlignmentOffset,
+      ...rest
+    },
+    ref,
+  ) => {
     return (
       <TransparentItem ref={ref} {...rest}>
         <ObjectRenderer
           object={object}
           objectProps={objectProps}
           objectOffset={objectOffset}
+          objectAlignmentOffset={objectAlignmentOffset}
           disableObjectRender={disableObjectRender}
         />
 
