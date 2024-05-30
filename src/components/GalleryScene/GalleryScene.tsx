@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Color } from "three";
 
-const GalleryScene: React.FC<GallerySceneProps> = ({
+export const GalleryScene: React.FC<GallerySceneProps> = ({
   backgroundColor = "#000000",
   orbitControls,
   children,
@@ -59,5 +59,3 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
     </Canvas>
   );
 };
-
-export default GalleryScene;
