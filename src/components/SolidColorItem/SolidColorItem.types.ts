@@ -1,6 +1,6 @@
-import { Color } from "three";
 import { GalleryItemProps } from "../GalleryItem";
+import { ColorRepresentation } from "three";
 
-export type SolidColorItemProps = Omit<GalleryItemProps, "itemMaterial"> & {
-  color: string | Color;
+export type SolidColorItemProps = Omit<GalleryItemProps, "material"> & {
+  color: ColorRepresentation;
 };

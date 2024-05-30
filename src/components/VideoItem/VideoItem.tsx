@@ -1,30 +1,30 @@
-import React, { useLayoutEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { VideoItemProps } from "./VideoItem.types";
-import { VideoItemMaterial } from "../../core";
 import { GalleryItem } from "../GalleryItem";
 import { Mesh } from "three";
+import { useVideoMaterial } from "./useVideoMaterial";
 
 export const VideoItem = React.forwardRef<Mesh, VideoItemProps>(
-  ({ src, children, autoplay = true, muted = true, loop = true, crossOrigin, ...rest }, ref) => {
-    const material = useMemo(() => {
-      return new VideoItemMaterial(src, crossOrigin ?? undefined);
-    }, [src, crossOrigin]);
+  (
+    { src, children, autoplay = true, muted = true, loop = true, crossOrigin, onInit, ...rest },
+    ref,
+  ) => {
+    const { material, video, texture } = useVideoMaterial({
+      src,
+      autoplay,
+      muted,
+      loop,
+      crossOrigin,
+    });
 
-    useLayoutEffect(() => {
-      if (material.getVideo()) {
-        const video = material.getVideo()!;
-        video.muted = muted;
-        video.loop = loop;
-
-        if (autoplay) {
-          // Play video if autoplay is enabled
-          video.play();
-        }
+    useEffect(() => {
+      if (onInit) {
+        onInit(video, texture);
       }
-    }, [autoplay, loop, material, muted]);
+    }, [onInit, texture, video]);
 
     return (
-      <GalleryItem ref={ref} itemMaterial={material} {...rest}>
+      <GalleryItem ref={ref} material={material} {...rest}>
         {children}
       </GalleryItem>
     );

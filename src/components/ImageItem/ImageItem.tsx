@@ -1,21 +1,18 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { ImageItemProps } from "./ImageItem.types";
-import { ImageItemMaterial } from "../../core";
 import { GalleryItem } from "../GalleryItem";
 import { Mesh } from "three";
+import { useImageMaterial } from "./useImageMaterial";
 
 export const ImageItem = React.forwardRef<Mesh, ImageItemProps>(
   ({ src, texture, children, ...rest }, ref) => {
-    if (!src && !texture) {
-      throw new Error("Either src or texture must be provided");
-    }
-
-    const material = useMemo(() => {
-      return new ImageItemMaterial(texture ?? src!);
-    }, [src, texture]);
+    const { material } = useImageMaterial({
+      src,
+      texture,
+    });
 
     return (
-      <GalleryItem ref={ref} itemMaterial={material} {...rest}>
+      <GalleryItem ref={ref} material={material} {...rest}>
         {children}
       </GalleryItem>
     );

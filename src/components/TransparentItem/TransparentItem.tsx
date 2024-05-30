@@ -1,17 +1,27 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { TransparentItemProps } from "./TransparentItem.types";
-import { TransparentItemMaterial } from "../../core";
 import { GalleryItem } from "../GalleryItem";
-import { Mesh } from "three";
+import { Mesh, MeshBasicMaterial } from "three";
 
 export const TransparentItem = React.forwardRef<Mesh, TransparentItemProps>(
   ({ opacity = 0, children, ...rest }, ref) => {
     const material = useMemo(() => {
-      return new TransparentItemMaterial(opacity);
-    }, [opacity]);
+      return new MeshBasicMaterial({
+        color: 0xffffff,
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
+        transparent: true,
+        opacity: 0,
+      });
+    }, []);
+
+    useEffect(() => {
+      material.opacity = opacity;
+    }, [material, opacity]);
 
     return (
-      <GalleryItem ref={ref} itemMaterial={material} {...rest}>
+      <GalleryItem ref={ref} material={material} {...rest}>
         {children}
       </GalleryItem>
     );

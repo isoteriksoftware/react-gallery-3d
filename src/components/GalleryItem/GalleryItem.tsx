@@ -6,7 +6,7 @@ import { CSG } from "three-csg-ts";
 import GalleryItemContext from "./GalleryItemContext";
 
 export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
-  ({ itemMaterial, children, onInit }, ref) => {
+  ({ material, children }, ref) => {
     const itemData = useContext(GalleryItemContext);
     if (itemData === GALLERY_ITEM_NO_PROVIDER_FLAG) {
       throw new Error("GalleryItem must be a child of Gallery");
@@ -31,10 +31,6 @@ export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
       },
       [height, heightSegments, itemIndex, radialSegments, sectionAngle],
     );
-
-    const generatedMaterial = useMemo(() => {
-      return itemMaterial.generate();
-    }, [itemMaterial]);
 
     const outerMesh = useMemo(() => new Mesh(), []);
     const innerMesh = useMemo(() => new Mesh(), []);
@@ -65,20 +61,8 @@ export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
     }, [innerGeometry, innerMesh]);
 
     useEffect(() => {
-      if (mesh) {
-        mesh.material = generatedMaterial;
-      }
-    }, [generatedMaterial, mesh]);
-
-    useEffect(() => {
-      if (mesh && itemMaterial && generatedMaterial) {
-        onInit?.({
-          mesh,
-          material: generatedMaterial,
-          itemMaterial,
-        });
-      }
-    }, [generatedMaterial, itemMaterial, mesh, onInit]);
+      mesh.material = material;
+    }, [material, mesh]);
 
     return (
       <primitive object={mesh} ref={ref}>
