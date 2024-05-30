@@ -8,4 +8,5 @@ export type ObjectItemProps = TransparentItemProps & {
   objectOffset?: number;
   objectAlignmentOffset?: number;
   disableObjectRender?: boolean;
+  onObjectAlignmentChange?: (object: Object3D) => void;
 };

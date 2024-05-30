@@ -10,9 +10,15 @@ const ObjectRenderer = ({
   disableObjectRender,
   objectOffset = 0,
   objectAlignmentOffset,
+  onObjectAlignmentChange,
 }: Pick<
   ObjectItemProps,
-  "object" | "objectProps" | "objectOffset" | "objectAlignmentOffset" | "disableObjectRender"
+  | "object"
+  | "objectProps"
+  | "objectOffset"
+  | "objectAlignmentOffset"
+  | "disableObjectRender"
+  | "onObjectAlignmentChange"
 >) => {
   const { position, orientation } = usePlacementOnGalleryItem(objectOffset, objectAlignmentOffset);
 
@@ -20,8 +26,12 @@ const ObjectRenderer = ({
     if (object) {
       object.position.copy(position);
       object.lookAt(orientation);
+
+      if (onObjectAlignmentChange) {
+        onObjectAlignmentChange(object);
+      }
     }
-  }, [object, orientation, position]);
+  }, [object, onObjectAlignmentChange, orientation, position]);
 
   if (disableObjectRender || !object) return null;
 
@@ -37,6 +47,7 @@ export const ObjectItem = React.forwardRef<Mesh, ObjectItemProps>(
       objectOffset,
       disableObjectRender,
       objectAlignmentOffset,
+      onObjectAlignmentChange,
       ...rest
     },
     ref,
@@ -49,6 +60,7 @@ export const ObjectItem = React.forwardRef<Mesh, ObjectItemProps>(
           objectOffset={objectOffset}
           objectAlignmentOffset={objectAlignmentOffset}
           disableObjectRender={disableObjectRender}
+          onObjectAlignmentChange={onObjectAlignmentChange}
         />
 
         {children}
