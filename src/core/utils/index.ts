@@ -9,8 +9,8 @@ import { Vector3 } from "three";
  * @param {number} sectionAngle - The angular size of the item in radians.
  * @param {number} itemCount - The total number of items in the gallery.
  * @param {number} [itemAlignmentOffset] - An optional angular offset to adjust the alignment
- *                                             of the object within the item. This value is calculated if not provided.
- * @param {number} [objectOffset] - The offset distance from the item's surface to the object's center. Defaults to 0.
+ *                                        of the object within the item. This value is calculated if not provided.
+ * @param {number} [objectOffset] - The offset distance from the item's surface to the object's center on the z-axis. Defaults to 0.
  * @param {Vector3} [position] - Optional vector to be filled with the calculated position.
  * @param {Vector3} [orientation] - Optional vector to be filled with the calculated orientation.
  * @returns {{ position: Vector3, orientation: Vector3 }} - The position and orientation vectors.
