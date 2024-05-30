@@ -29,7 +29,7 @@ class VideoItemMaterial implements GalleryItemMaterial {
     this.video.load();
   }
 
-  generate(): Material | Material[] {
+  generate(): Material {
     this.initVideo();
 
     return new MeshStandardMaterial({

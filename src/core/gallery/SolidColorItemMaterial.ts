@@ -15,7 +15,7 @@ class SolidColorItemMaterial implements GalleryItemMaterial {
     }
   }
 
-  generate(): Material | Material[] {
+  generate(): Material {
     return new MeshStandardMaterial({
       color: this.finalColor,
       polygonOffset: true,

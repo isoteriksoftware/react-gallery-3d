@@ -19,7 +19,7 @@ class ImageItemMaterial implements GalleryItemMaterial {
     }
   }
 
-  generate(): Material | Material[] {
+  generate(): Material {
     this.initTexture();
 
     return new MeshStandardMaterial({
