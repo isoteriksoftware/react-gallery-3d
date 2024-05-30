@@ -1,5 +1,5 @@
 import { DoubleSide, Material, MeshStandardMaterial, VideoTexture } from "three";
-import { GalleryItemMaterial } from "./GalleryItemMaterial";
+import { GalleryItemMaterial } from ".";
 
 export class VideoItemMaterial implements GalleryItemMaterial {
   protected readonly source: string;

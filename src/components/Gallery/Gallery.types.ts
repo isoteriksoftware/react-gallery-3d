@@ -5,6 +5,7 @@ import { GalleryItem, GalleryItemProps } from "../GalleryItem";
 import { SolidColorItem, SolidColorItemProps } from "../SolidColorItem";
 import { ImageItem, ImageItemProps } from "../ImageItem";
 import { VideoItem, VideoItemProps } from "../VideoItem";
+import { TransparentItem, TransparentItemProps } from "../TransparentItem";
 
 export const GALLERY_NO_PROVIDER_FLAG = Symbol("GALLERY_NO_PROVIDER");
 
@@ -23,13 +24,20 @@ export interface GalleryState {
   };
 }
 
-export const AllowedGalleryItemTypes = [GalleryItem, SolidColorItem, ImageItem, VideoItem];
+export const AllowedGalleryItemTypes = [
+  GalleryItem,
+  SolidColorItem,
+  ImageItem,
+  VideoItem,
+  TransparentItem,
+];
 
 export type GalleryItemType =
   | ReactElement<GalleryItemProps, typeof GalleryItem>
   | ReactElement<SolidColorItemProps, typeof SolidColorItem>
   | ReactElement<ImageItemProps, typeof ImageItem>
-  | ReactElement<VideoItemProps, typeof VideoItem>;
+  | ReactElement<VideoItemProps, typeof VideoItem>
+  | ReactElement<TransparentItemProps, typeof TransparentItem>;
 
 export type GalleryChildren = [
   GalleryItemType,

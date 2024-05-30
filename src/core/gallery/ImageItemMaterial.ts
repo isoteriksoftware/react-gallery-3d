@@ -1,5 +1,5 @@
 import { Texture, MeshStandardMaterial, Material, DoubleSide, TextureLoader } from "three";
-import { GalleryItemMaterial } from "./GalleryItemMaterial";
+import { GalleryItemMaterial } from ".";
 
 export class ImageItemMaterial implements GalleryItemMaterial {
   protected readonly url: string | undefined;

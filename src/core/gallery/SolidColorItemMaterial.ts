@@ -1,5 +1,5 @@
 import { MeshStandardMaterial, Color, Material } from "three";
-import { GalleryItemMaterial } from "./GalleryItemMaterial";
+import { GalleryItemMaterial } from ".";
 
 export class SolidColorItemMaterial implements GalleryItemMaterial {
   protected readonly color: Color | string;
