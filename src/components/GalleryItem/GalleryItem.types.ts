@@ -1,4 +1,4 @@
-import GalleryItemMaterial from "../../core/gallery/GalleryItemMaterial";
+import { GalleryItemMaterial } from "../../core";
 import { PropsWithChildren } from "react";
 import { Material, Mesh } from "three";
 

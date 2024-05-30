@@ -1,7 +1,5 @@
 import { Material } from "three";
 
-interface GalleryItemMaterial {
+export interface GalleryItemMaterial {
   generate: () => Material | Material[];
 }
-
-export default GalleryItemMaterial;

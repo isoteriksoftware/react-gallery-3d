@@ -1,7 +1,7 @@
 import { MeshStandardMaterial, Color, Material } from "three";
-import GalleryItemMaterial from "./GalleryItemMaterial";
+import { GalleryItemMaterial } from "./GalleryItemMaterial";
 
-class SolidColorItemMaterial implements GalleryItemMaterial {
+export class SolidColorItemMaterial implements GalleryItemMaterial {
   protected readonly color: Color | string;
   protected readonly finalColor: Color;
 
@@ -24,5 +24,3 @@ class SolidColorItemMaterial implements GalleryItemMaterial {
     });
   }
 }
-
-export default SolidColorItemMaterial;

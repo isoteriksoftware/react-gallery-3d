@@ -1,7 +1,7 @@
 import { DoubleSide, Material, MeshStandardMaterial, VideoTexture } from "three";
-import GalleryItemMaterial from "./GalleryItemMaterial";
+import { GalleryItemMaterial } from "./GalleryItemMaterial";
 
-class VideoItemMaterial implements GalleryItemMaterial {
+export class VideoItemMaterial implements GalleryItemMaterial {
   protected readonly source: string;
   protected texture: VideoTexture | undefined;
   protected video: HTMLVideoElement | undefined;
@@ -46,5 +46,3 @@ class VideoItemMaterial implements GalleryItemMaterial {
     return this.video;
   }
 }
-
-export default VideoItemMaterial;

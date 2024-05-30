@@ -1,7 +1,7 @@
 import { Texture, MeshStandardMaterial, Material, DoubleSide, TextureLoader } from "three";
-import GalleryItemMaterial from "./GalleryItemMaterial";
+import { GalleryItemMaterial } from "./GalleryItemMaterial";
 
-class ImageItemMaterial implements GalleryItemMaterial {
+export class ImageItemMaterial implements GalleryItemMaterial {
   protected readonly url: string | undefined;
   protected texture: Texture | undefined;
 
@@ -32,5 +32,3 @@ class ImageItemMaterial implements GalleryItemMaterial {
     });
   }
 }
-
-export default ImageItemMaterial;
