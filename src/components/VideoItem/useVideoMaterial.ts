@@ -1,5 +1,5 @@
 import { DoubleSide, MeshStandardMaterial, VideoTexture } from "three";
-import { useEffect, useLayoutEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { MappableMaterial } from "react-gallery-3d";
 
 export type UseVideoMaterialOptions = {
@@ -63,13 +63,6 @@ export const useVideoMaterial = ({
       video.play();
     }
   }, [autoplay, src, video]);
-
-  useLayoutEffect(() => {
-    if (autoplay) {
-      video.muted = true; // Required for autoplay to work
-      video.play();
-    }
-  }, [autoplay, video]);
 
   return { video, texture, material };
 };
