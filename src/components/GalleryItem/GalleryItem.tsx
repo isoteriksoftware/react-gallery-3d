@@ -1,5 +1,5 @@
 import { GALLERY_ITEM_NO_PROVIDER_FLAG, GalleryItemProps } from "./GalleryItem.types";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import useGallery from "../Gallery/useGallery";
 import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
@@ -12,54 +12,60 @@ const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
       throw new Error("GalleryItem must be a child of Gallery");
     }
 
+    const { itemIndex } = itemData;
     const { outerRadius, height, radialSegments, heightSegments, sectionAngle, innerRadius } =
       useGallery().item;
+
+    const createCylinderGeometry = useCallback(
+      (radius: number) => {
+        return new CylinderGeometry(
+          radius,
+          radius,
+          height,
+          radialSegments,
+          heightSegments,
+          false,
+          itemIndex * sectionAngle,
+          sectionAngle,
+        );
+      },
+      [height, heightSegments, itemIndex, radialSegments, sectionAngle],
+    );
 
     const generatedMaterial = useMemo(() => {
       return itemMaterial.generate();
     }, [itemMaterial]);
 
+    const outerMesh = useMemo(() => new Mesh(), []);
+    const innerMesh = useMemo(() => new Mesh(), []);
+
+    const outerGeometry = useMemo(() => {
+      return createCylinderGeometry(outerRadius);
+    }, [createCylinderGeometry, outerRadius]);
+
+    const innerGeometry = useMemo(() => {
+      return createCylinderGeometry(innerRadius);
+    }, [createCylinderGeometry, innerRadius]);
+
     const mesh = useMemo(() => {
-      const outerGeometry = new CylinderGeometry(
-        outerRadius,
-        outerRadius,
-        height,
-        radialSegments,
-        heightSegments,
-        false,
-        itemData.itemIndex * sectionAngle,
-        sectionAngle,
-      );
-      const outerMesh = new Mesh(outerGeometry);
-
-      const innerGeometry = new CylinderGeometry(
-        innerRadius,
-        innerRadius,
-        height,
-        radialSegments,
-        heightSegments,
-        false,
-        itemData.itemIndex * sectionAngle,
-        sectionAngle,
-      );
-      const innerMesh = new Mesh(innerGeometry);
-      innerMesh.position.y = -0.01; // Offset to prevent z-fighting
-
       // Perform CSG subtraction to hollow out the segment
-      const finalMesh = CSG.subtract(outerMesh, innerMesh);
-      finalMesh.material = generatedMaterial;
+      return CSG.subtract(outerMesh, innerMesh);
+    }, [innerMesh, outerMesh]);
 
-      return finalMesh;
-    }, [
-      outerRadius,
-      height,
-      radialSegments,
-      heightSegments,
-      itemData.itemIndex,
-      sectionAngle,
-      innerRadius,
-      generatedMaterial,
-    ]);
+    useEffect(() => {
+      outerMesh.geometry = outerGeometry;
+      // eslint-disable-next-line
+    }, [outerGeometry]);
+
+    useEffect(() => {
+      innerMesh.geometry = innerGeometry;
+      innerMesh.position.y = -0.01; // Offset to prevent z-fighting
+      // eslint-disable-next-line
+    }, [innerGeometry]);
+
+    useEffect(() => {
+      mesh.material = generatedMaterial;
+    }, [generatedMaterial, mesh]);
 
     useEffect(() => {
       if (mesh && itemMaterial && generatedMaterial) {
