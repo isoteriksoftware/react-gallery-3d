@@ -3,6 +3,11 @@ import { SolidColorItemProps } from "./SolidColorItem.types";
 import { GalleryItem } from "../GalleryItem";
 import { Mesh, MeshStandardMaterial } from "three";
 
+/**
+ * This component is a wrapper around the GalleryItem component, and it renders a solid color item.
+ *
+ * @param color The color of the solid color item.
+ */
 export const SolidColorItem = React.forwardRef<Mesh, SolidColorItemProps>(
   ({ color, children, ...rest }, ref) => {
     const material = useMemo(() => {

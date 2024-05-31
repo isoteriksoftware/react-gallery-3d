@@ -29,7 +29,7 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
     ...restOrbitControls
   } = orbitControls || {};
 
-  const { color: fogColor = "#000000", near = 10, far = 400 } = fog || {};
+  const { color: fogColor = "#000000", near = 10, far = 400, ...restFogProps } = fog || {};
 
   const background = useMemo(() => new Color(backgroundColor), [backgroundColor]);
 
@@ -43,7 +43,7 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
     >
       {!disableGround && <Ground position={[0, -25, 0]} {...ground} />}
 
-      {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} />}
+      {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} {...restFogProps} />}
 
       <Suspense fallback={null}>
         {children}

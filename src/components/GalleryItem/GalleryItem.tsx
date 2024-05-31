@@ -5,6 +5,12 @@ import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
 import GalleryItemContext from "./GalleryItemContext";
 
+/**
+ * This component is a child of the gallery component, and it represents an item in the gallery.
+ *
+ * @param material The material to use for the item.
+ * @param children The children to render.
+ */
 export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
   ({ material, children }, ref) => {
     const itemData = useContext(GalleryItemContext);
@@ -16,6 +22,12 @@ export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
     const { outerRadius, height, radialSegments, heightSegments, sectionAngle, innerRadius } =
       useGallery().item;
 
+    /**
+     * Creates a cylinder geometry with the specified radius.
+     *
+     * @param radius The radius of the cylinder.
+     * @returns The cylinder geometry.
+     */
     const createCylinderGeometry = useCallback(
       (radius: number) => {
         return new CylinderGeometry(

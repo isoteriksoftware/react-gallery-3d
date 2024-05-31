@@ -4,6 +4,18 @@ import { Mesh } from "three";
 import { ObjectItemProps } from "./ObjectItem.types";
 import { TransparentItem } from "react-gallery-3d";
 
+/**
+ * Renders and aligns the object on the gallery item.
+ * This component is used internally by the ObjectItem component.
+ *
+ * @param object The object to render.
+ * @param objectProps The object properties.
+ * @param disableObjectRender Whether to disable the object render.
+ * @param objectOffset The object offset.
+ * @param objectAlignmentOffset The object alignment offset.
+ * @param onObjectAlignmentChange The callback to call when the object alignment changes.
+ * @param onBeforeObjectAlignmentApplied The callback to call before the object alignment is applied.
+ */
 const ObjectRenderer = ({
   object,
   objectProps,
@@ -44,6 +56,19 @@ const ObjectRenderer = ({
   return <primitive object={object} {...objectProps} />;
 };
 
+/**
+ * This component is used to render any three.js object on a gallery item.
+ *
+ * It is a wrapper around the TransparentItem component.
+ *
+ * @param object The object to render.
+ * @param objectProps The object properties.
+ * @param disableObjectRender Whether to disable the object render.
+ * @param objectOffset The object offset.
+ * @param objectAlignmentOffset The object alignment offset.
+ * @param onObjectAlignmentChange The callback to call when the object alignment changes.
+ * @param onBeforeObjectAlignmentApplied The callback to call before the object alignment is applied.
+ */
 export const ObjectItem = React.forwardRef<Mesh, ObjectItemProps>(
   (
     {

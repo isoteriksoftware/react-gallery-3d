@@ -7,23 +7,74 @@ import { VideoItem, VideoItemProps } from "../VideoItem";
 import { TransparentItem, TransparentItemProps } from "../TransparentItem";
 import { ObjectItem, ObjectItemProps } from "../ObjectItem";
 
+/**
+ * A flag to indicate that no provider was found.
+ */
 export const GALLERY_NO_PROVIDER_FLAG = Symbol("GALLERY_NO_PROVIDER");
 
+/**
+ * The gallery state.
+ * This state is used to store the gallery item count and the gallery item properties.
+ */
 export interface GalleryState {
+  /**
+   * This is the number of items in the gallery.
+   */
   itemCount: number;
   item: {
+    /**
+     * The width of the gallery item.
+     */
     width: number;
+
+    /**
+     * The height of the gallery item.
+     */
     height: number;
+
+    /**
+     * The number of radial segments.
+     */
     radialSegments: number;
+
+    /**
+     * The number of height segments.
+     */
     heightSegments: number;
+
+    /**
+     * The percentage of the outer radius to use as the inner radius.
+     */
     innerRadiusPercent: number;
+
+    /**
+     * The angle of the section of the gallery item.
+     * This is used to calculate the position of the gallery item.
+     */
     sectionAngle: number;
+
+    /**
+     * The radius of the gallery item.
+     */
     outerRadius: number;
+
+    /**
+     * The inner radius of the gallery item.
+     */
     innerRadius: number;
+
+    /**
+     * The index of the gallery item.
+     */
     itemIndex?: number;
   };
 }
 
+/**
+ * The valid gallery item types.
+ * These are the types that can be used as children of the Gallery component.
+ * Any other type will be ignored.
+ */
 export const AllowedGalleryItemTypes = [
   GalleryItem,
   SolidColorItem,
@@ -33,6 +84,9 @@ export const AllowedGalleryItemTypes = [
   ObjectItem,
 ];
 
+/**
+ * The gallery item type.
+ */
 export type GalleryItemType =
   | ReactElement<GalleryItemProps, typeof GalleryItem>
   | ReactElement<SolidColorItemProps, typeof SolidColorItem>
@@ -41,6 +95,11 @@ export type GalleryItemType =
   | ReactElement<TransparentItemProps, typeof TransparentItem>
   | ReactElement<ObjectItemProps, typeof ObjectItem>;
 
+/**
+ * The gallery children type.
+ * This is the type of the children of the Gallery component.
+ * At least 3 gallery items are required.
+ */
 export type GalleryChildren = [
   GalleryItemType,
   GalleryItemType,
@@ -48,13 +107,49 @@ export type GalleryChildren = [
   ...GalleryItemType[],
 ];
 
+/**
+ * The Gallery component properties.
+ */
 export interface GalleryProps extends Omit<GroupProps, "children" | "ref"> {
+  /**
+   * The children of the gallery.
+   * These are the gallery items.
+   */
   children: GalleryChildren;
   item?: {
+    /**
+     * The width of the gallery item.
+     *
+     * @default 120
+     */
     width?: number;
+
+    /**
+     * The height of the gallery item.
+     *
+     * @default 50
+     */
     height?: number;
+
+    /**
+     * The number of radial segments.
+     *
+     * @default 50
+     */
     radialSegments?: number;
+
+    /**
+     * The number of height segments.
+     *
+     * @default 1
+     */
     heightSegments?: number;
+
+    /**
+     * The percentage of the outer radius to use as the inner radius.
+     *
+     * @default 0.01
+     */
     innerRadiusPercent?: number;
   };
 }

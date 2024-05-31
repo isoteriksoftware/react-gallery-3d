@@ -7,7 +7,7 @@ export type ObjectAlignment = {
 
 /**
  * Calculates the position and orientation vectors for an object to be placed on a gallery item (cylinder segment).
- * If position or lookAt vectors are not provided, new vectors will be created.
+ * If position or orientation vectors are not provided, new vectors will be created.
  *
  * @param {number} itemIndex - The index of the item in the gallery.
  * @param {number} outerRadius - The outer radius of the item.

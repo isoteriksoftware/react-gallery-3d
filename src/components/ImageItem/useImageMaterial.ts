@@ -1,30 +1,32 @@
-import { DoubleSide, MeshStandardMaterial, Texture, TextureLoader } from "three";
-import { MappableMaterial } from "react-gallery-3d";
+import { DoubleSide, MeshStandardMaterial, TextureLoader } from "three";
 import { useEffect, useMemo } from "react";
+import { UseImageMaterialOptions, UseImageMaterialResult } from "./ImageItem.types";
 
-export type UseImageMaterialOptions = {
-  src?: string;
-  texture?: Texture;
-  sourceMaterial?: MappableMaterial;
-};
-
-export type UseImageMaterialResult = {
-  texture: Texture;
-  material: MappableMaterial;
-};
-
+/**
+ * This hook creates a material with a texture from the provided source.
+ *
+ * An existing material can be wrapped using the wrappedMaterial prop.
+ * If no wrappedMaterial is provided, a new MeshStandardMaterial is created.
+ *
+ * If a texture is provided, it is used instead of loading the source.
+ *
+ * @param src The source of the image.
+ * @param texture The texture to use.
+ * @param wrappedMaterial The material to wrap.
+ * @returns The texture and material.
+ */
 export const useImageMaterial = ({
   src,
   texture,
-  sourceMaterial,
+  wrappedMaterial,
 }: UseImageMaterialOptions): UseImageMaterialResult => {
   if (!src && !texture) {
     throw new Error("Either src or texture must be provided");
   }
 
   const material = useMemo(() => {
-    if (sourceMaterial) {
-      return sourceMaterial;
+    if (wrappedMaterial) {
+      return wrappedMaterial;
     }
 
     return new MeshStandardMaterial({
@@ -34,7 +36,7 @@ export const useImageMaterial = ({
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
     });
-  }, [sourceMaterial]);
+  }, [wrappedMaterial]);
 
   const targetTexture = useMemo(() => {
     if (texture) {

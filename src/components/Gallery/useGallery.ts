@@ -1,10 +1,16 @@
 import { useContext } from "react";
 import GalleryContext from "./GalleryContext";
-import { GALLERY_NO_PROVIDER_FLAG } from "./Gallery.types";
+import { GALLERY_NO_PROVIDER_FLAG, GalleryState } from "./Gallery.types";
 import GalleryItemContext from "../GalleryItem/GalleryItemContext";
 import { GALLERY_ITEM_NO_PROVIDER_FLAG } from "../GalleryItem";
 
-export const useGallery = () => {
+/**
+ * A hook to get the gallery data.
+ * This hook must be called within a Gallery component.
+ *
+ * @returns {GalleryState} The gallery state data.
+ */
+export const useGallery = (): GalleryState => {
   const data = useContext(GalleryContext);
 
   if (data === GALLERY_NO_PROVIDER_FLAG) {

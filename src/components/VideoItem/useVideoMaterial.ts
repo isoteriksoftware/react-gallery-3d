@@ -1,33 +1,18 @@
 import { DoubleSide, MeshStandardMaterial, VideoTexture } from "three";
 import { useEffect, useMemo } from "react";
-import { MappableMaterial } from "react-gallery-3d";
-
-export type UseVideoMaterialOptions = {
-  src: string;
-  sourceMaterial?: MappableMaterial;
-  autoplay?: boolean;
-  muted?: boolean;
-  loop?: boolean;
-  crossOrigin?: JSX.IntrinsicElements["video"]["crossOrigin"];
-};
-
-export type UseVideoMaterialResult = {
-  video: HTMLVideoElement;
-  texture: VideoTexture;
-  material: MappableMaterial;
-};
+import { UseVideoMaterialOptions, UseVideoMaterialResult } from "react-gallery-3d";
 
 export const useVideoMaterial = ({
   src,
-  sourceMaterial,
+  wrappedMaterial,
   crossOrigin,
   autoplay = true,
   muted = true,
   loop = true,
 }: UseVideoMaterialOptions): UseVideoMaterialResult => {
   const material = useMemo(() => {
-    if (sourceMaterial) {
-      return sourceMaterial;
+    if (wrappedMaterial) {
+      return wrappedMaterial;
     }
 
     return new MeshStandardMaterial({
@@ -37,7 +22,7 @@ export const useVideoMaterial = ({
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
     });
-  }, [sourceMaterial]);
+  }, [wrappedMaterial]);
 
   const video = useMemo(() => document.createElement("video"), []);
   const texture = useMemo(() => new VideoTexture(video), [video]);
