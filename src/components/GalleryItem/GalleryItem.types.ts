@@ -1,37 +1,48 @@
-import GalleryItemMaterial from "../../core/gallery/GalleryItemMaterial";
 import { PropsWithChildren } from "react";
-import { Color, Material, Mesh, Texture } from "three";
+import {
+  Material,
+  MeshBasicMaterial,
+  MeshLambertMaterial,
+  MeshPhongMaterial,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
+  MeshToonMaterial,
+  PointsMaterial,
+  SpriteMaterial,
+} from "three";
 
+/**
+ * A flag to indicate that the gallery item has no provider.
+ */
 export const GALLERY_ITEM_NO_PROVIDER_FLAG = Symbol("GALLERY_ITEM_NO_PROVIDER");
 
+/**
+ * The gallery item state.
+ * This state is used to keep track of the current item index.
+ */
 export interface GalleryItemState {
   itemIndex: number;
 }
 
-export interface GalleryItemInitData {
-  itemMaterial: GalleryItemMaterial;
-  mesh: Mesh;
-  material: Material | Material[];
-}
-
+/**
+ * The GalleryItem component properties.
+ */
 export type GalleryItemProps = PropsWithChildren<{
-  itemMaterial: GalleryItemMaterial;
-  onInit?: (data: GalleryItemInitData) => void;
+  /**
+   * The material to apply to the gallery item.
+   */
+  material: Material | Material[];
 }>;
 
-export type SolidColorItemProps = Omit<GalleryItemProps, "itemMaterial"> & {
-  color: string | Color;
-};
-
-export type ImageItemProps = Omit<GalleryItemProps, "itemMaterial"> & {
-  src?: string;
-  texture?: Texture;
-};
-
-export type VideoItemProps = Omit<GalleryItemProps, "itemMaterial"> & {
-  src: string;
-  autoplay?: boolean;
-  muted?: boolean;
-  loop?: boolean;
-  crossOrigin?: "anonymous" | "use-credentials" | "" | null;
-};
+/**
+ * This type represents materials having a map property.
+ */
+export type MappableMaterial =
+  | MeshBasicMaterial
+  | MeshLambertMaterial
+  | MeshStandardMaterial
+  | MeshPhongMaterial
+  | MeshPhysicalMaterial
+  | MeshToonMaterial
+  | PointsMaterial
+  | SpriteMaterial;

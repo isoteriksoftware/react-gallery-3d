@@ -3,8 +3,9 @@ import { GallerySceneProps } from "./GalleryScene.types";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Color } from "three";
+import { Ground } from "../Ground";
 
-const GalleryScene: React.FC<GallerySceneProps> = ({
+export const GalleryScene: React.FC<GallerySceneProps> = ({
   backgroundColor = "#000000",
   orbitControls,
   children,
@@ -13,6 +14,10 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
   disableEnvironment,
   fog,
   environment,
+  ground,
+  disableGround,
+  camera,
+  scene,
   ...rest
 }) => {
   const {
@@ -24,7 +29,7 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
     ...restOrbitControls
   } = orbitControls || {};
 
-  const { color: fogColor = "#000000", near = 10, far = 400 } = fog || {};
+  const { color: fogColor = "#000000", near = 10, far = 400, ...restFogProps } = fog || {};
 
   const background = useMemo(() => new Color(backgroundColor), [backgroundColor]);
 
@@ -32,11 +37,13 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
     <Canvas
       gl={{ alpha: false }}
       dpr={[1, 2]}
-      camera={{ position: [0, 50, 150], fov: 60 }}
-      scene={{ background: background }}
+      camera={{ position: [0, 50, 150], fov: 60, ...(camera as any) }}
+      scene={{ background: background, ...(scene as any) }}
       {...rest}
     >
-      {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} />}
+      {!disableGround && <Ground position={[0, -25, 0]} {...ground} />}
+
+      {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} {...restFogProps} />}
 
       <Suspense fallback={null}>
         {children}
@@ -59,5 +66,3 @@ const GalleryScene: React.FC<GallerySceneProps> = ({
     </Canvas>
   );
 };
-
-export default GalleryScene;
