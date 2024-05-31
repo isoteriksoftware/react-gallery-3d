@@ -1,5 +1,10 @@
 import { Vector3 } from "three";
 
+export type ObjectAlignment = {
+  position: Vector3;
+  orientation: Vector3;
+};
+
 /**
  * Calculates the position and orientation vectors for an object to be placed on a gallery item (cylinder segment).
  * If position or lookAt vectors are not provided, new vectors will be created.
@@ -13,7 +18,7 @@ import { Vector3 } from "three";
  * @param {number} [objectOffset] - The offset distance from the item's surface to the object's center on the z-axis. Defaults to 0.
  * @param {Vector3} [position] - Optional vector to be filled with the calculated position.
  * @param {Vector3} [orientation] - Optional vector to be filled with the calculated orientation.
- * @returns {{ position: Vector3, orientation: Vector3 }} - The position and orientation vectors.
+ * @returns {ObjectAlignment} - The position and orientation vectors.
  */
 export const calculatePlacementOnGalleryItem = (
   itemIndex: number,
@@ -24,7 +29,7 @@ export const calculatePlacementOnGalleryItem = (
   objectOffset: number = 0,
   position: Vector3 = new Vector3(),
   orientation: Vector3 = new Vector3(),
-): { position: Vector3; orientation: Vector3 } => {
+): ObjectAlignment => {
   const alignmentOffset =
     itemAlignmentOffset ??
     (itemCount <= 8
