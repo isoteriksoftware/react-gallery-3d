@@ -16,6 +16,8 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
   environment,
   ground,
   disableGround,
+  camera,
+  scene,
   ...rest
 }) => {
   const {
@@ -35,8 +37,8 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
     <Canvas
       gl={{ alpha: false }}
       dpr={[1, 2]}
-      camera={{ position: [0, 50, 150], fov: 60 }}
-      scene={{ background: background }}
+      camera={{ position: [0, 50, 150], fov: 60, ...(camera as any) }}
+      scene={{ background: background, ...(scene as any) }}
       {...rest}
     >
       {!disableGround && <Ground position={[0, -25, 0]} {...ground} />}
