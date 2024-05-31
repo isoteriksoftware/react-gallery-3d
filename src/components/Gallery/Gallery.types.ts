@@ -16,11 +16,15 @@ export const GALLERY_NO_PROVIDER_FLAG = Symbol("GALLERY_NO_PROVIDER");
  * The gallery state.
  * This state is used to store the gallery item count and the gallery item properties.
  */
-export interface GalleryState {
+export type GalleryState = {
   /**
-   * This is the number of items in the gallery.
+   * The total number of items in the gallery.
    */
   itemCount: number;
+
+  /**
+   * The gallery item properties.
+   */
   item: {
     /**
      * The width of the gallery item.
@@ -68,7 +72,7 @@ export interface GalleryState {
      */
     itemIndex?: number;
   };
-}
+};
 
 /**
  * The valid gallery item types.
@@ -100,22 +104,23 @@ export type GalleryItemType =
  * This is the type of the children of the Gallery component.
  * At least 3 gallery items are required.
  */
-export type GalleryChildren = [
-  GalleryItemType,
-  GalleryItemType,
-  GalleryItemType,
-  ...GalleryItemType[],
-];
+export type GalleryChildren =
+  | [GalleryItemType, GalleryItemType, GalleryItemType, ...GalleryItemType[]]
+  | GalleryItemType[];
 
 /**
  * The Gallery component properties.
  */
-export interface GalleryProps extends Omit<GroupProps, "children" | "ref"> {
+export type GalleryProps = Omit<GroupProps, "children" | "ref"> & {
   /**
    * The children of the gallery.
    * These are the gallery items.
    */
   children: GalleryChildren;
+
+  /**
+   * The gallery item properties.
+   */
   item?: {
     /**
      * The width of the gallery item.
@@ -152,4 +157,4 @@ export interface GalleryProps extends Omit<GroupProps, "children" | "ref"> {
      */
     innerRadiusPercent?: number;
   };
-}
+};

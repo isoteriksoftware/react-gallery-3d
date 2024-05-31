@@ -1,7 +1,14 @@
 import { Vector3 } from "three";
 
 export type ObjectAlignment = {
+  /**
+   * The calculated position for the object.
+   */
   position: Vector3;
+
+  /**
+   * The calculated orientation for the object.
+   */
   orientation: Vector3;
 };
 

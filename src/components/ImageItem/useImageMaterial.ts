@@ -3,7 +3,7 @@ import { useEffect, useMemo } from "react";
 import { UseImageMaterialOptions, UseImageMaterialResult } from "./ImageItem.types";
 
 /**
- * This hook creates a material with a texture from the provided source.
+ * This hook creates a material mapped to a texture from the provided source.
  *
  * An existing material can be wrapped using the wrappedMaterial prop.
  * If no wrappedMaterial is provided, a new MeshStandardMaterial is created.
