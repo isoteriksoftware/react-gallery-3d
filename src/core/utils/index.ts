@@ -35,14 +35,23 @@ export const calculatePlacementOnGalleryItem = (
     (itemCount <= 8
       ? calculateItemAlignmentOffsetPolynomial(itemCount)
       : calculateItemAlignmentOffsetQuadratic(itemCount));
+
+  // The angular offset to align the object within the item.
+  // It is calculated as the sum of the angular size of the item divided by 2 and the alignment offset.
   const angularOffset = sectionAngle / 2 + alignmentOffset;
 
+  // The angle of the center of the item in the gallery.
   const centerAngle = ((itemCount - itemIndex) * sectionAngle + angularOffset) % (2 * Math.PI);
 
+  // The position of the object on the item's surface.
+  // It is calculated by projecting the center of the item to the surface of the cylinder.
   position.set(outerRadius * Math.cos(centerAngle), 0, outerRadius * Math.sin(centerAngle));
 
+  // The orientation of the object.
+  // It is calculated by creating a vector from the center of the item to the object's position.
   orientation.set(Math.cos(centerAngle), 0, Math.sin(centerAngle)).normalize();
 
+  // The object's offset from the item's surface.
   position.addScaledVector(orientation, objectOffset);
 
   return { position, orientation };
