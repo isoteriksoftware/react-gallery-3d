@@ -16,6 +16,6 @@ export type GallerySceneProps = Omit<CanvasProps, "children"> & {
   disableFog?: boolean;
   disableEnvironment?: boolean;
   environment?: EnvironmentProps;
-  groundProps?: GroundProps;
+  ground?: GroundProps;
   disableGround?: boolean;
 };

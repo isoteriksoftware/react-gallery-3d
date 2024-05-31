@@ -14,7 +14,7 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
   disableEnvironment,
   fog,
   environment,
-  groundProps,
+  ground,
   disableGround,
   ...rest
 }) => {
@@ -39,7 +39,7 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
       scene={{ background: background }}
       {...rest}
     >
-      {!disableGround && <Ground position={[0, -25, 0]} {...groundProps} />}
+      {!disableGround && <Ground position={[0, -25, 0]} {...ground} />}
 
       {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} />}
 
