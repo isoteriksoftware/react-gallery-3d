@@ -3,6 +3,7 @@ import { GallerySceneProps } from "./GalleryScene.types";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Color } from "three";
+import { Ground } from "../Ground";
 
 export const GalleryScene: React.FC<GallerySceneProps> = ({
   backgroundColor = "#000000",
@@ -13,6 +14,8 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
   disableEnvironment,
   fog,
   environment,
+  groundProps,
+  disableGround,
   ...rest
 }) => {
   const {
@@ -36,6 +39,8 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
       scene={{ background: background }}
       {...rest}
     >
+      {!disableGround && <Ground position={[0, -25, 0]} {...groundProps} />}
+
       {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} />}
 
       <Suspense fallback={null}>

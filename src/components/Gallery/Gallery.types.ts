@@ -1,5 +1,4 @@
 import { GroupProps } from "@react-three/fiber";
-import { GroundProps } from "../Ground";
 import { ReactElement } from "react";
 import { GalleryItem, GalleryItemProps } from "../GalleryItem";
 import { SolidColorItem, SolidColorItemProps } from "../SolidColorItem";
@@ -51,8 +50,6 @@ export type GalleryChildren = [
 
 export interface GalleryProps extends Omit<GroupProps, "children" | "ref"> {
   children: GalleryChildren;
-  ground?: GroundProps;
-  disableGround?: boolean;
   item?: {
     width?: number;
     height?: number;
