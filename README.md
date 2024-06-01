@@ -16,6 +16,62 @@ Version 2 introduces exciting new features and optimizations to enhance your gal
 ## Demo
 Check out the [live demo (playground)](https://react-gallery-3d-demo.vercel.app/) to see `react-gallery-3d` in action and explore its capabilities.
 
+## Table of Contents
+<!-- TOC -->
+  * [New Features](#new-features)
+  * [Demo](#demo)
+  * [Table of Contents](#table-of-contents)
+  * [Installation](#installation)
+  * [Peer Dependencies](#peer-dependencies)
+  * [Basic Usage](#basic-usage)
+  * [Advanced Usage](#advanced-usage)
+  * [Components](#components)
+    * [`<GalleryScene/>`](#galleryscene)
+      * [Props](#props)
+      * [Example Usage](#example-usage)
+    * [`<Gallery/>`](#gallery)
+      * [Props](#props-1)
+      * [Example Usage](#example-usage-1)
+    * [`<GalleryItem/>`](#galleryitem)
+      * [Props](#props-2)
+      * [Example Usage](#example-usage-2)
+    * [`<SolidColorItem/>`](#solidcoloritem)
+      * [Props](#props-3)
+      * [Example Usage](#example-usage-3)
+    * [`<ImageItem/>`](#imageitem)
+      * [Props](#props-4)
+      * [Example Usage](#example-usage-4)
+    * [`<VideoItem/>`](#videoitem)
+      * [Props](#props-5)
+      * [Example Usage](#example-usage-5)
+    * [`<TransparentItem/>`](#transparentitem)
+      * [Props](#props-6)
+      * [Example Usage](#example-usage-6)
+    * [`<ObjectItem/>`](#objectitem)
+      * [Props](#props-7)
+      * [Example Usage](#example-usage-7)
+  * [Hooks](#hooks)
+    * [`useGallery()`](#usegallery)
+      * [Example Usage](#example-usage-8)
+    * [`usePlacementOnGalleryItem()`](#useplacementongalleryitem)
+    * [`useImageMaterial()`](#useimagematerial)
+      * [Example Usage](#example-usage-9)
+    * [`useVideoMaterial()`](#usevideomaterial)
+      * [Example Usage](#example-usage-10)
+  * [Breaking Changes](#breaking-changes)
+  * [Migration Guide](#migration-guide)
+    * [GalleryItem Material API](#galleryitem-material-api)
+      * [Before](#before)
+      * [Now](#now)
+    * [GalleryItemMaterial Implementations](#galleryitemmaterial-implementations)
+      * [Before](#before-1)
+      * [Now](#now-1)
+    * [Gallery Ground API](#gallery-ground-api)
+      * [Before](#before-2)
+      * [Now](#now-2)
+  * [Contributing](#contributing)
+<!-- TOC -->
+
 ## Installation
 ```bash
 npm install react-gallery-3d three @react-three/fiber @react-three/drei
@@ -1417,5 +1473,298 @@ export default App;
 
 <br/>
 
-# Contributing
+## Breaking Changes
+Version 2.x.x introduces breaking changes to the API.
+
+The biggest change is on the material generation API. 
+The library now gives you more control over how and when materials are generated and reused across gallery items.
+
+Please review the following changes carefully to update your code accordingly:
+- The `GalleryItem` component now requires a `material` prop to specify the material for the gallery item. Previously, the material was created internally using a generator function `itemMaterial` prop. This prop is no longer supported.
+- `GalleryItemMaterial` and its subclasses are no longer available. You should use the `GalleryItem` component with a custom material instead.
+- The `Gallery` component no longer accepts props for managing a `Ground` component. The `Ground` component is now managed internally by the `GalleryScene` component. All the props for the `Ground` are now available in the `GalleryScene` component.
+
+
+## Migration Guide
+This guide will help you migrate from version 1.x.x to version 2.x.x of the library.
+
+### GalleryItem Material API
+In version 1.x.x, the `GalleryItem` component generated the material internally using the `itemMaterial` prop.
+This was a convenient way to create materials for gallery items without having to manage them manually.
+
+In version 2.x.x, the `GalleryItem` component requires a `material` prop to specify the material for the gallery item.
+This gives you more control over how and when materials are created and reused across gallery items.
+
+#### Before
+```tsx
+class ShinyRedMaterial implements GalleryItemMaterial {
+  public generate() {
+    return new MeshPhysicalMaterial({
+      color: 'red',
+      reflectivity: 1,
+      metalness: 1,
+      roughness: 0.2,
+      clearcoat: 1,
+      clearcoatRoughness: 0.1,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+    });
+  }
+}
+
+function App() {
+  const shinyRedMaterialGenerator = useMemo(() => new ShinyRedMaterial(), []);
+  const [shinyRedMaterial, setShinyRedMaterial] = useState<MeshPhysicalMaterial>();
+
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene>
+        <Gallery>
+          <GalleryItem
+            itemMaterial={shinyRedMaterialGenerator}
+            onInit={({ material }) => setShinyRedMaterial(material as MeshPhysicalMaterial)}
+          />
+
+          {/* Other items... */}
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+```
+
+#### Now
+```tsx
+function App() {
+  const shinyRedMaterial = useMemo(
+    () =>
+      new MeshPhysicalMaterial({
+        color: "red",
+        reflectivity: 1,
+        metalness: 1,
+        roughness: 0.2,
+        clearcoat: 1,
+        clearcoatRoughness: 0.1,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
+      }),
+    [],
+  );
+
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene>
+        <Gallery>
+          <GalleryItem material={shinyRedMaterial} />
+
+          {/* Other items... */}
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+```
+
+<br/>
+
+### GalleryItemMaterial Implementations
+In version 1.x.x, the library provided `GalleryItemMaterial` and its 
+implementations (`ImageItemMaterial`, `SolidColorItemMaterial`, and `VideoItemMaterial`) to create materials for gallery items.
+
+These implementations are no longer available in version 2.x.x.
+You should use the `GalleryItem` component with a custom material or use new hooks like `useImageMaterial()` and 
+`useVideoMaterial()` to create materials for gallery items.
+
+#### Before
+```tsx
+class GlassyImageMaterial extends ImageItemMaterial {
+  constructor() {
+    super("/images/img1.jpg");
+  }
+
+  public generate() {
+    this.initTexture();
+
+    return new MeshPhysicalMaterial({
+      toneMapped: false,
+      map: this.texture,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+      metalness: 0,
+      roughness: 0,
+      transmission: 0.2,
+      clearcoat: 0.3,
+    });
+  }
+}
+
+function App() {
+  const glassyImageMaterialGenerator = useMemo(
+    () => new GlassyImageMaterial(),
+    [],
+  );
+  const [glassyImageMaterial, setGlassyImageMaterial] =
+    useState<MeshPhysicalMaterial>();
+
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene>
+        <Gallery>
+          <GalleryItem
+            itemMaterial={glassyImageMaterialGenerator}
+            onInit={({ material }) =>
+              setGlassyImageMaterial(material as MeshPhysicalMaterial)
+            }
+          />
+
+          {/* Other items... */}
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+```
+
+#### Now
+```tsx
+function GlassyImage() {
+  const material = useMemo(() => {
+    return new MeshPhysicalMaterial({
+      toneMapped: false,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+      metalness: 0,
+      roughness: 0,
+      transmission: 0.2,
+      clearcoat: 0.3,
+    });
+  }, []);
+
+  const { material: finalMaterial } = useImageMaterial({
+    src: "/images/img1.jpg",
+    wrappedMaterial: material,
+  });
+
+  return <GalleryItem material={finalMaterial} />;
+}
+
+function App() {
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene>
+        <Gallery>
+          <GlassyImage />
+
+          {/* Other items... */}
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+```
+
+> **Hint** <br/>
+> Import `useImageMaterial` from `react-gallery-3d`.
+
+<br/>
+
+### Gallery Ground API
+In version 1.x.x, the `Gallery` component accepted props for managing a `Ground` component.
+This allowed you to customize the ground material and properties for the gallery.
+
+In version 2.x.x, the `Gallery` component no longer accepts props for managing a `Ground` component.
+The `Ground` component is now managed internally by the `GalleryScene` component.
+All the props for the `Ground` are now available in the `GalleryScene` component.
+
+This makes it easier to use one `Ground` component for the entire gallery scene.
+
+#### Before
+```tsx
+function App() {
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene>
+        <Gallery
+          ground={{
+            reflectorMaterial: {
+              metalness: 1,
+              roughness: 0.9,
+              mirror: 1,
+              resolution: 2048,
+            },
+          }}
+        >
+          {/* Gallery items... */}
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+```
+
+#### Now
+```tsx
+function App() {
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene
+        ground={{
+          reflectorMaterial: {
+            metalness: 1,
+            roughness: 0.9,
+            mirror: 1,
+            resolution: 2048,
+          },
+        }}
+      >
+        <Gallery>
+          {/* Gallery items... */}
+        </Gallery>
+
+        <Gallery position-x={160}>
+          {/* Gallery items... */}
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+```
+
+> **Hint** <br/>
+> You can now render multiple `Gallery` components in the `GalleryScene` component, and they will share the same ground.
+
+
+## Contributing
 Contributions are welcome! Please read our [Code of Conduct](https://github.com/isoteriksoftware/react-gallery-3d/blob/master/CODE_OF_CONDUCT.md) and [Contributing](https://github.com/isoteriksoftware/react-gallery-3d/blob/master/CONTRIBUTING.md)
