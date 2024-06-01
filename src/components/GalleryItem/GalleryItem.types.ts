@@ -1,4 +1,3 @@
-import { PropsWithChildren } from "react";
 import {
   Material,
   MeshBasicMaterial,
@@ -10,6 +9,7 @@ import {
   PointsMaterial,
   SpriteMaterial,
 } from "three";
+import { MeshProps } from "@react-three/fiber";
 
 /**
  * A flag to indicate that the gallery item has no provider.
@@ -27,12 +27,12 @@ export interface GalleryItemState {
 /**
  * The GalleryItem component properties.
  */
-export type GalleryItemProps = PropsWithChildren<{
+export type GalleryItemProps = MeshProps & {
   /**
    * The material to apply to the gallery item.
    */
   material: Material | Material[];
-}>;
+};
 
 /**
  * This type represents materials having a map property.

@@ -12,7 +12,7 @@ import GalleryItemContext from "./GalleryItemContext";
  * @param children The children to render.
  */
 export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
-  ({ material, children }, ref) => {
+  ({ material, children, ...rest }, ref) => {
     const itemData = useContext(GalleryItemContext);
     if (itemData === GALLERY_ITEM_NO_PROVIDER_FLAG) {
       throw new Error("GalleryItem must be a child of Gallery");
@@ -77,7 +77,7 @@ export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
     }, [material, mesh]);
 
     return (
-      <primitive object={mesh} ref={ref}>
+      <primitive object={mesh} ref={ref} {...rest}>
         {children}
       </primitive>
     );

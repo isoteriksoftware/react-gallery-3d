@@ -457,12 +457,12 @@ This allows you to customize the appearance of the gallery item.
 
 #### Props
 ```tsx
-type GalleryItemProps = PropsWithChildren<{
+type GalleryItemProps = MeshProps & {
   /**
    * The material to apply to the gallery item.
    */
   material: Material | Material[];
-}>;
+};
 ```
 
 #### Example Usage
