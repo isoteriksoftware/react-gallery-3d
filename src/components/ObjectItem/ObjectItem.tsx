@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { usePlacementOnGalleryItem } from "../GalleryItem";
 import { Mesh } from "three";
 import { ObjectItemProps } from "./ObjectItem.types";
-import { TransparentItem } from "react-gallery-3d";
+import { TransparentItem } from "../TransparentItem";
 
 /**
  * Renders and aligns the object on the gallery item.
