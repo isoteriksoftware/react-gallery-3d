@@ -22,6 +22,12 @@ export type GalleryState = {
    */
   itemCount: number;
 
+  itemsId: string[];
+
+  registerItem: (id: string) => void;
+
+  unregisterItem: (id: string) => void;
+
   /**
    * The gallery item properties.
    */
