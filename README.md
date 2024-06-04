@@ -13,6 +13,7 @@ Version 2 introduces exciting new features and optimizations to enhance your gal
 - **New Item Material API**: The item material API has been redesigned to make it easier to create and reuse custom materials for gallery items. Full control over the material properties is now possible.
 - **Support for Deeply Nested Gallery Items**: With v2.2.x, Gallery Items can now be rendered deep within the component tree, allowing for more complex and dynamic galleries.
 - **Support for Gallery with less than 3 items**: You can now render galleries with less than three items. This allows you to create galleries with one or two items.
+- **Support for Gallery Item Props Overrides**: You can now override the gallery item properties for individual items, allowing you to create galleries with items of different sizes and configuration.
 - **Improved Performance**: The library has been optimized to improve performance and reduce memory usage, making it faster and more efficient.
 
 ## Demo
@@ -53,7 +54,7 @@ Check out the [live demo (playground)](https://react-gallery-3d-demo.vercel.app/
       * [Props](#props-7)
       * [Example Usage](#example-usage-7)
   * [Hooks](#hooks)
-    * [`useGallery()`](#usegallery)
+    * [`useGalleryItem()`](#usegalleryitem)
       * [Example Usage](#example-usage-8)
     * [`usePlacementOnGalleryItem()`](#useplacementongalleryitem)
     * [`useImageMaterial()`](#useimagematerial)
@@ -71,6 +72,12 @@ Check out the [live demo (playground)](https://react-gallery-3d-demo.vercel.app/
     * [Gallery Ground API](#gallery-ground-api)
       * [Before](#before-2)
       * [Now](#now-2)
+    * [Gallery Children](#gallery-children)
+      * [Before](#before-3)
+      * [Now](#now-3)
+    * [GalleryItem Properties](#galleryitem-properties)
+      * [Before](#before-4)
+      * [Now](#now-4)
   * [Contributing](#contributing)
 <!-- TOC -->
 
@@ -236,8 +243,8 @@ The `GalleryScene` is a wrapper around the `Canvas` component from `@react-three
 It sets up the 3D environment, camera, lighting, fog, and controls for galleries. 
 It also provides a ground plane with a reflector material for realistic reflections.
 
-You can customize the scene by passing props to the `GalleryScene` component.
 This component can render galleries and other 3D objects.
+You can customize the scene by passing props to the `GalleryScene` component.
 
 #### Props
 ```tsx
@@ -254,7 +261,7 @@ type GallerySceneProps = Omit<CanvasProps, "children"> & {
    *
    * @default #000000
    */
-  backgroundColor?: string;
+  backgroundColor?: ColorRepresentation;
 
   /**
    * The Fog properties
@@ -325,6 +332,11 @@ type GallerySceneProps = Omit<CanvasProps, "children"> & {
    * @default false
    */
   disableGround?: boolean;
+
+  /**
+   * The fallback to render while loading the scene.
+   */
+  suspenseFallback?: ReactNode;
 };
 ```
 
@@ -376,19 +388,20 @@ It requires at least three items to render.
 All children of the `Gallery` component must be `GalleryItem` or its subclasses (e.g., `ImageItem`, `VideoItem`, `SolidColorItem`, etc.).
 Unknown children will be ignored.
 
-It accepts props to customize the appearance and layout of the gallery items.
+It accepts global props to customize the appearance and layout of the gallery items.
 
 #### Props
 ```tsx
 type GalleryProps = Omit<GroupProps, "children" | "ref"> & {
   /**
    * The children of the gallery.
-   * These are the gallery items.
    */
   children: GalleryChildren;
 
   /**
-   * The gallery item properties.
+   * The global properties for all the items in the gallery.
+   *
+   * These properties are used when the gallery item properties are not provided.
    */
   item?: {
     /**
@@ -425,8 +438,15 @@ type GalleryProps = Omit<GroupProps, "children" | "ref"> & {
      * @default 0.01
      */
     innerRadiusPercent?: number;
+
+    /**
+     * The section angle of the gallery item.
+     *
+     * This property is calculated using the total number of items in the gallery when not provided.
+     */
+    sectionAngle?: number;
   };
-}
+};
 ```
 
 #### Example Usage
@@ -457,6 +477,9 @@ for more control over the placement of the object.
 The component has a `material` prop that accepts a material or an array of materials to apply to the gallery item.
 This allows you to customize the appearance of the gallery item.
 
+By default, the `material` is automatically disposed when the component is unmounted.
+You can disable this behavior by setting the `disableAutoDispose` prop to `true`.
+
 #### Props
 ```tsx
 type GalleryItemProps = MeshProps & {
@@ -464,16 +487,67 @@ type GalleryItemProps = MeshProps & {
    * The material to apply to the gallery item.
    */
   material: Material | Material[];
+
+  /**
+   * Disables the auto-disposal of the material.
+   *
+   * When set to true, the material will not be disposed of when the component is unmounted.
+   */
+  disableAutoDispose?: boolean;
+
+  /**
+   * The width of the gallery item.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  width?: number;
+
+  /**
+   * The height of the gallery item.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  height?: number;
+
+  /**
+   * The number of radial segments.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  radialSegments?: number;
+
+  /**
+   * The number of height segments.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  heightSegments?: number;
+
+  /**
+   * The percentage of the outer radius to use as the inner radius.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  innerRadiusPercent?: number;
+
+  /**
+   * The section angle of the gallery item.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  sectionAngle?: number;
 };
 ```
 
 #### Example Usage
 ```tsx
 import { Gallery, GalleryItem, GalleryScene } from "react-gallery-3d";
-import { useMemo } from "react";
-import { MeshStandardMaterial } from "three";
+import { useMemo, useState } from "react";
+import { MathUtils, MeshStandardMaterial } from "three";
 
 function App() {
+  const [rotation] = useState(MathUtils.degToRad(10));
+
   const greenMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
@@ -525,9 +599,27 @@ function App() {
         }}
       >
         <Gallery>
-          <GalleryItem material={greenMaterial} />
-          <GalleryItem material={redMaterial} />
-          <GalleryItem material={blueMaterial} />
+          <GalleryItem
+            material={greenMaterial}
+            sectionAngle={Math.PI / 4}
+            position-z={10}
+            rotation-z={rotation}
+          />
+          <GalleryItem
+            material={greenMaterial}
+            sectionAngle={Math.PI / 2}
+            position-z={10}
+          />
+          <GalleryItem
+            material={redMaterial}
+            rotation-z={rotation}
+            onPointerOver={() => console.log("Item Hovered!")}
+          />
+          <GalleryItem
+            material={blueMaterial}
+            rotation-z={rotation}
+            onClick={() => console.log("Item Clicked!")}
+          />
         </Gallery>
       </GalleryScene>
     </main>
@@ -536,7 +628,7 @@ function App() {
 
 export default App;
 ```
-![Example Output](https://github.com/isoteriksoftware/react-gallery-3d/assets/50753501/8acf261b-a7c3-4dfe-bbe2-6c609fa30747)
+![Example Output](https://github.com/isoteriksoftware/react-gallery-3d/assets/50753501/715871eb-1bb8-4d81-992a-32947448370b)
  
 <br/>
 
@@ -594,10 +686,12 @@ export default App;
 The `ImageItem` component renders a gallery item with an image (texture) mapped to a material.
 This component is useful for creating gallery items with images.
 
-It accepts a `texture` prop to provide a custom texture for the item.
-It also accepts a `src` prop to specify the URL of the image to use as the texture.
+It accepts a `texture` for providing a custom texture for the item.
+It also accepts a `src` prop for specifying the URL of the image to use as the texture.
 
-Using the `texture` prop is recommended for better performance and control over loading the texture using `useTexture` from `@react-three/drei`.
+Using the `texture` prop is recommended for better performance and control over how the texture is loaded (using `useTexture` from `@react-three/drei` for example).
+
+One of `src` or `texture` must be provided to render the image.
 
 #### Props
 ```tsx
@@ -681,7 +775,7 @@ export default App;
 The `VideoItem` component renders a gallery item with a video texture mapped to a material.
 This component is useful for creating gallery items with videos.
 
-It accepts a `src` prop to specify the URL of the video to use as the texture.
+It accepts a `src` prop for specifying the URL of the video to use as the texture.
 It also accepts props to control the video playback, such as `autoplay`, `muted`, and `loop`.
 
 When `autoplay` is set to `true`, the video will be muted by default. 
@@ -884,16 +978,18 @@ export default App;
 The `ObjectItem` component renders a gallery item with a custom three.js object.
 This component is useful for creating gallery items with custom 3D objects.
 
-It accepts an `object` prop to specify the custom object to render.
-The `object` can be a reference to an object you render yourself or leave it to the component to render the object 
-by setting the `disableObjectRender` prop to `true`.
+It accepts an `object` prop for specifying the custom object to render.
+By default, the `object` will be rendered by the component. This is useful for rendering instances of models, meshes, etc.
 
-When `disableObjectRender` is set to `true`, the component will not pass the `objectProps` prop to the object,
-but it will still automatically align the object on the gallery item surface using the `usePlacementOnGalleryItem` hook.
+If you want to control the rendering of the object, set the `disableObjectRender` prop to `true`. 
+This will automatically align the object on the gallery item surface using the `usePlacementOnGalleryItem` hook
+but will not render the object.
+
+When `disableObjectRender` is set to `true`, the component will not pass the `objectProps` prop to the object.
 This allows you to render the object yourself and have full control over its appearance and behavior.
 
 This component makes it very easy render models on gallery items.
-It can also be used to automatically place an object on a gallery item using the `usePlacementOnGalleryItem` hook internally.
+It can also be used to automatically place an object on a gallery item.
 
 #### Props
 ```tsx
@@ -948,6 +1044,16 @@ type ObjectItemProps = TransparentItemProps & {
 
 #### Example Usage
 ```tsx
+import { useAnimations, useGLTF } from "@react-three/drei";
+import { useEffect, useState } from "react";
+import {
+  Gallery,
+  GalleryScene,
+  ObjectItem,
+  SolidColorItem,
+} from "react-gallery-3d";
+import { Mesh } from "three";
+
 function BellyDancer() {
   const { scene: model, animations } = useGLTF("/models/belly-dancer.glb");
   const { ref, actions } = useAnimations(animations, model);
@@ -1025,75 +1131,66 @@ export default App;
 
 ## Hooks
 
-### `useGallery()`
-The `useGallery` hook provides access to the `GalleryContext` (and `GalleryItemContext` when called within a gallery item), 
-allowing you to access the gallery and items properties.
+### `useGalleryItem()`
+The `useGalleryItem` hook provides access to the `GalleryItemContext`, allowing you to access the gallery items properties.
 
-This hook is useful when you need to access the gallery properties in a child component of the `Gallery` component.
+This hook is useful when you need to access the gallery item properties in a child component of the `GalleryItem` component.
 It returns a `UseGalleryReturnType` object that contains the gallery item properties.
 
 ```tsx
-type UseGalleryReturnType = Omit<
-  GalleryState,
-  "itemsId" | "registerItem" | "unregisterItem"
->;
-
-type GalleryState = {
+type UseGalleryItemReturnType = GalleryItemState & {
   /**
    * The total number of items in the gallery.
    */
   itemCount: number;
+};
+
+type GalleryItemState = {
+  /**
+   * The width of the gallery item.
+   */
+  width: number;
 
   /**
-   * The gallery item properties.
+   * The height of the gallery item.
    */
-  item: {
-    /**
-     * The width of the gallery item.
-     */
-    width: number;
+  height: number;
 
-    /**
-     * The height of the gallery item.
-     */
-    height: number;
+  /**
+   * The number of radial segments.
+   */
+  radialSegments: number;
 
-    /**
-     * The number of radial segments.
-     */
-    radialSegments: number;
+  /**
+   * The number of height segments.
+   */
+  heightSegments: number;
 
-    /**
-     * The number of height segments.
-     */
-    heightSegments: number;
+  /**
+   * The percentage of the outer radius to use as the inner radius.
+   */
+  innerRadiusPercent: number;
 
-    /**
-     * The percentage of the outer radius to use as the inner radius.
-     */
-    innerRadiusPercent: number;
+  /**
+   * The angle of the section of the gallery item.
+   * This is used to calculate the position of the gallery item.
+   */
+  sectionAngle: number;
 
-    /**
-     * The angle of the section of the gallery item.
-     * This is used to calculate the position of the gallery item.
-     */
-    sectionAngle: number;
+  /**
+   * The radius of the gallery item.
+   */
+  outerRadius: number;
 
-    /**
-     * The radius of the gallery item.
-     */
-    outerRadius: number;
+  /**
+   * The inner radius of the gallery item.
+   */
+  innerRadius: number;
 
-    /**
-     * The inner radius of the gallery item.
-     */
-    innerRadius: number;
-
-    /**
-     * The index of the gallery item.
-     */
-    itemIndex?: number;
-  };
+  /**
+   * The index of the gallery item.
+   */
+  itemIndex: number;
 };
 ```
 
@@ -1103,7 +1200,7 @@ import {
   Gallery,
   GalleryScene,
   SolidColorItem,
-  useGallery,
+  useGalleryItem,
   usePlacementOnGalleryItem,
 } from "react-gallery-3d";
 import { Text } from "@react-three/drei";
@@ -1111,9 +1208,7 @@ import { useEffect, useRef } from "react";
 import { MathUtils, Mesh } from "three";
 
 function ItemLabel() {
-  const {
-    item: { itemIndex },
-  } = useGallery();
+  const { itemIndex } = useGalleryItem();
   const textRef = useRef<Mesh | null>(null);
   const { position, orientation } = usePlacementOnGalleryItem(5);
 
@@ -1128,7 +1223,7 @@ function ItemLabel() {
 
   return (
     <Text ref={textRef} fontSize={6} color="white" textAlign="center">
-      ITEM {(itemIndex || 0) + 1}
+      ITEM {itemIndex + 1}
     </Text>
   );
 }
@@ -1199,7 +1294,7 @@ type ObjectAlignment = {
 ```
 
 > **Hint** <br/>
-> Check the example above for how to use the `usePlacementOnGalleryItem` hook.
+> Check how the `usePlacementOnGalleryItem` hook in the previous example.
 
 <br/>
 
@@ -1210,7 +1305,7 @@ It is useful for creating custom materials for gallery items with images.
 An existing material can be wrapped using the wrappedMaterial prop.
 This allows you to create a custom material and use the image texture as the map property.
 
-If no wrappedMaterial is provided, a new MeshStandardMaterial is created.
+If no wrappedMaterial is provided, a new `MeshStandardMaterial` is created.
 
 If a texture is provided, it is used instead of loading the source:
 ```tsx
@@ -1335,7 +1430,7 @@ It is useful for creating custom materials for gallery items with videos.
 An existing material can be wrapped using the wrappedMaterial prop.
 This allows you to create a custom material and use the video texture as the map property.
 
-If no wrappedMaterial is provided, a new MeshStandardMaterial is created:
+If no wrappedMaterial is provided, a new `MeshStandardMaterial` is created:
 ```tsx
 type UseVideoMaterialOptions = {
   /**
@@ -1486,7 +1581,8 @@ Please review the following changes carefully to update your code accordingly:
 - The `GalleryItem` component now requires a `material` prop to specify the material for the gallery item. Previously, the material was created internally using a generator function `itemMaterial` prop. This prop is no longer supported.
 - `GalleryItemMaterial` and its subclasses are no longer available. You should use the `GalleryItem` component with a custom material instead.
 - The `Gallery` component no longer accepts props for managing a `Ground` component. The `Ground` component is now managed internally by the `GalleryScene` component. All the props for the `Ground` are now available in the `GalleryScene` component.
-- Starting from version 2.2.x, the `Gallery` component no longer limits its children to only supported types. This means it will render any child component provided unlike in previous versions where unknown children are ignored.
+- The `Gallery` component no longer limits its children to only supported types. This means it will render all of its children unlike in previous versions where unknown children are ignored.
+- `useGallery()` hook is no longer available. You should use the `useGalleryItem()` hook to access the gallery item properties.
 
 
 ## Migration Guide
@@ -1769,6 +1865,202 @@ function App() {
 > **Hint** <br/>
 > You can now render multiple `Gallery` components in the `GalleryScene` component, and they will share the same ground.
 
+<br/>
+
+### Gallery Children
+In version 1.x.x, the `Gallery` component only rendered children of supported types (e.g., `GalleryItem`, `SolidColorItem`, `ImageItem`, etc.).
+
+In version 2.x.x, the `Gallery` component no longer limits its children to only supported types.
+This means it will render all of its children unlike in previous versions where unknown children are ignored.
+
+This allows you to render any component as a child of the `Gallery` component. 
+Only children that are `GalleryItem` or renders a `GalleryItem` will be treated as gallery items. 
+
+#### Before
+```tsx
+
+// THIS WORKS
+
+function App() {
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene>
+        <Gallery>
+          <SolidColorItem color="red" />
+          <SolidColorItem color="green" />
+          <SolidColorItem color="blue" />
+          <SolidColorItem color="yellow" />
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+
+
+// THIS DOES NOT WORK
+// Gallery cannot determine the type of the children rendered by MyGalleryItems
+// so it has no idea a valid GalleryItem is being rendered
+
+const MyGalleryItems = () => {
+  const images = Array.from(
+    { length: 6 },
+    (_, i) => `./images/img${i + 1}.jpg`,
+  );
+
+  const textures = useTexture(images);
+
+  return textures.map((texture, index) => (
+    <ImageItem key={index} texture={texture} />
+  ));
+};
+
+function App() {
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene
+        ground={{
+          reflectorMaterial: {
+            metalness: 1,
+            roughness: 0.9,
+            mirror: 1,
+            resolution: 2048,
+          },
+        }}
+        environment={{
+          preset: "sunset",
+        }}
+      >
+        <Gallery>
+          <MyGalleryItems />
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+```
+
+#### Now
+```tsx
+// THIS WORKS
+// Gallery will render all children of the Gallery component
+// ImageItem renders a GalleryItem, so it will be treated as a gallery item
+
+const MyGalleryItems = () => {
+  const images = Array.from(
+    { length: 6 },
+    (_, i) => `./images/img${i + 1}.jpg`,
+  );
+
+  const textures = useTexture(images);
+
+  return textures.map((texture, index) => (
+    <ImageItem key={index} texture={texture} />
+  ));
+};
+
+function App() {
+  return (
+    <main
+      style={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <GalleryScene
+        ground={{
+          reflectorMaterial: {
+            metalness: 1,
+            roughness: 0.9,
+            mirror: 1,
+            resolution: 2048,
+          },
+        }}
+        environment={{
+          preset: "sunset",
+        }}
+      >
+        <Gallery>
+          <MyGalleryItems />
+        </Gallery>
+      </GalleryScene>
+    </main>
+  );
+}
+```
+
+<br/>
+
+### GalleryItem Properties
+In version 1.x.x, the `useGallery()` hook was used to access the gallery item properties.
+
+In version 2.x.x, the `useGallery()` hook is no longer available.
+You should use the `useGalleryItem()` hook to access the gallery item properties.
+
+#### Before
+```tsx
+function ItemLabel() {
+  const {
+    item: { itemIndex },
+  } = useGallery();
+  const textRef = useRef<Mesh | null>(null);
+  const { position, orientation } = usePlacementOnGalleryItem(5);
+
+  useEffect(() => {
+    const text = textRef.current;
+    if (!text) return;
+
+    text.position.copy(position);
+    text.lookAt(orientation);
+    text.rotateY(MathUtils.degToRad(180));
+  }, [orientation, position]);
+
+  return (
+    <Text ref={textRef} fontSize={6} color="white" textAlign="center">
+      ITEM {(itemIndex || 0) + 1}
+    </Text>
+  );
+}
+```
+
+#### Now
+```tsx
+function ItemLabel() {
+  const { itemIndex } = useGalleryItem();
+  const textRef = useRef<Mesh | null>(null);
+  const { position, orientation } = usePlacementOnGalleryItem(5);
+
+  useEffect(() => {
+    const text = textRef.current;
+    if (!text) return;
+
+    text.position.copy(position);
+    text.lookAt(orientation);
+    text.rotateY(MathUtils.degToRad(180));
+  }, [orientation, position]);
+
+  return (
+    <Text ref={textRef} fontSize={6} color="white" textAlign="center">
+      ITEM {itemIndex + 1}
+    </Text>
+  );
+}
+```
+
+> **Hint** <br/>
+> Import `useGalleryItem` from `react-gallery-3d`.
+> The `itemIndex` property is never `null` or `undefined`.
+> The `itemIndex` property is now a direct property of the `useGalleryItem()` hook return value.
+> The `useGalleryItem()` can only be used within a child component of the `GalleryItem` component.
 
 ## Contributing
 Contributions are welcome! Please read our [Code of Conduct](https://github.com/isoteriksoftware/react-gallery-3d/blob/master/CODE_OF_CONDUCT.md) and [Contributing](https://github.com/isoteriksoftware/react-gallery-3d/blob/master/CONTRIBUTING.md)

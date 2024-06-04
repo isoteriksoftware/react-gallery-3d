@@ -37,13 +37,15 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
       camera={{ position: [0, 50, 150], fov: 60, ...(camera as any) }}
       {...rest}
     >
-      {backgroundColor && <color attach="background" args={[backgroundColor]} />}
-
-      {!disableGround && <Ground position={[0, -25, 0]} {...ground} />}
-
-      {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} {...restFogProps} />}
-
       <Suspense fallback={suspenseFallback}>
+        {backgroundColor && <color attach="background" args={[backgroundColor]} />}
+
+        {!disableGround && <Ground position={[0, -25, 0]} {...ground} />}
+
+        {!disableFog && (
+          <fog attach="fog" color={fogColor} near={near} far={far} {...restFogProps} />
+        )}
+
         {children}
 
         {!disableControls && (

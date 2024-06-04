@@ -17,6 +17,7 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
   (
     {
       material,
+      disableAutoDispose,
       children,
       width: preferredWidth,
       height: preferredHeight,
@@ -170,6 +171,20 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
         setMaterialApplied(true);
       }
     }, [material, mesh]);
+
+    useEffect(() => {
+      return () => {
+        if (!disableAutoDispose) {
+          if (Array.isArray(material)) {
+            for (const mt of material) {
+              mt.dispose();
+            }
+          } else {
+            material.dispose();
+          }
+        }
+      };
+    }, [disableAutoDispose, material]);
 
     if (itemIndex === undefined || !mesh || !materialApplied) {
       return null;

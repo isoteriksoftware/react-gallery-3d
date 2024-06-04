@@ -77,6 +77,13 @@ export type GalleryItemProps = MeshProps & {
   material: Material | Material[];
 
   /**
+   * Disables the auto-disposal of the material.
+   *
+   * When set to true, the material will not be disposed of when the component is unmounted.
+   */
+  disableAutoDispose?: boolean;
+
+  /**
    * The width of the gallery item.
    *
    * When not provided, the value is taken from the Gallery item properties.
@@ -119,6 +126,9 @@ export type GalleryItemProps = MeshProps & {
   sectionAngle?: number;
 };
 
+/**
+ * The return type of the useGalleryItem hook.
+ */
 export type UseGalleryItemReturnType = GalleryItemState & {
   /**
    * The total number of items in the gallery.
