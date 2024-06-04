@@ -11,10 +11,6 @@ import { Group } from "three";
  * @param item The gallery item properties.
  */
 export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, ...rest }, ref) => {
-  // if (children.length < 3) {
-  //   throw new Error("At least 3 Gallery Items are required");
-  // }
-
   const [itemsId, setItemsId] = useState<string[]>([]);
 
   const {

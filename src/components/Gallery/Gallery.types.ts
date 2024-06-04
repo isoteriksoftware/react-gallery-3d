@@ -1,11 +1,5 @@
 import { GroupProps } from "@react-three/fiber";
 import { ReactElement } from "react";
-import { GalleryItem, GalleryItemProps } from "../GalleryItem";
-import { SolidColorItem, SolidColorItemProps } from "../SolidColorItem";
-import { ImageItem, ImageItemProps } from "../ImageItem";
-import { VideoItem, VideoItemProps } from "../VideoItem";
-import { TransparentItem, TransparentItemProps } from "../TransparentItem";
-import { ObjectItem, ObjectItemProps } from "../ObjectItem";
 
 /**
  * A flag to indicate that no provider was found.
@@ -104,38 +98,16 @@ export type UseGalleryReturnType = Omit<
 >;
 
 /**
- * The valid gallery item types.
- * These are the types that can be used as children of the Gallery component.
- * Any other type will be ignored.
- */
-export const AllowedGalleryItemTypes = [
-  GalleryItem,
-  SolidColorItem,
-  ImageItem,
-  VideoItem,
-  TransparentItem,
-  ObjectItem,
-];
-
-/**
  * The gallery item type.
  */
-export type GalleryItemType =
-  | ReactElement<GalleryItemProps, typeof GalleryItem>
-  | ReactElement<SolidColorItemProps, typeof SolidColorItem>
-  | ReactElement<ImageItemProps, typeof ImageItem>
-  | ReactElement<VideoItemProps, typeof VideoItem>
-  | ReactElement<TransparentItemProps, typeof TransparentItem>
-  | ReactElement<ObjectItemProps, typeof ObjectItem>;
+export type GalleryItemType = ReactElement;
 
 /**
  * The gallery children type.
  * This is the type of the children of the Gallery component.
  * At least 3 gallery items are required.
  */
-export type GalleryChildren =
-  | [GalleryItemType, GalleryItemType, GalleryItemType, ...GalleryItemType[]]
-  | GalleryItemType[];
+export type GalleryChildren = GalleryItemType | Iterable<GalleryItemType>;
 
 /**
  * The Gallery component properties.
