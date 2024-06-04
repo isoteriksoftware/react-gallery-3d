@@ -1,6 +1,6 @@
 import { DoubleSide, MeshStandardMaterial, TextureLoader } from "three";
 import { useEffect, useMemo } from "react";
-import { UseImageMaterialOptions, UseImageMaterialResult } from "./ImageItem.types";
+import { UseImageMaterialOptions, UseImageMaterialReturnType } from "./ImageItem.types";
 
 /**
  * This hook creates a material mapped to a texture from the provided source.
@@ -19,7 +19,7 @@ export const useImageMaterial = ({
   src,
   texture,
   wrappedMaterial,
-}: UseImageMaterialOptions): UseImageMaterialResult => {
+}: UseImageMaterialOptions): UseImageMaterialReturnType => {
   if (!src && !texture) {
     throw new Error("Either src or texture must be provided");
   }
