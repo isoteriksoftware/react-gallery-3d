@@ -5,7 +5,7 @@ import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
 import { GalleryItemContext } from "./GalleryItemContext";
 import { GalleryContext } from "../Gallery/GalleryContext";
-import * as uuid from "uuid";
+import { v4 as uuid } from "uuid";
 
 /**
  * This component is a child of the gallery component, and it represents an item in the gallery.
@@ -22,7 +22,7 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
 
     const { registerItem, unregisterItem, itemsId } = galleryState;
 
-    const itemId = useMemo(() => uuid.v4(), []);
+    const itemId = useMemo(() => uuid(), []);
     const [itemIndex, setItemIndex] = useState<number>();
 
     useEffect(() => {

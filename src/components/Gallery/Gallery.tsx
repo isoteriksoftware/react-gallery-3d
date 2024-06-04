@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { GalleryContext } from "./GalleryContext";
 import { GalleryProps } from "./Gallery.types";
 import { Group } from "three";
@@ -40,11 +40,6 @@ export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, 
   const unregisterItem = useCallback((id: string) => {
     setItemsId((prevItems) => prevItems.filter((i) => i !== id));
   }, []);
-
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log({ itemsId });
-  }, [itemsId]);
 
   /**
    * Calculates the section angle, outer radius, and inner radius.

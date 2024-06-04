@@ -22,10 +22,25 @@ export type GalleryState = {
    */
   itemCount: number;
 
+  /**
+   * The gallery items ids.
+   */
   itemsId: string[];
 
+  /**
+   * Registers a gallery item.
+   * This function is called by the gallery item component to register itself.
+   *
+   * @param id The id of the gallery item.
+   */
   registerItem: (id: string) => void;
 
+  /**
+   * Unregisters a gallery item.
+   * This function is called by the gallery item component to unregister itself.
+   *
+   * @param id The id of the gallery item.
+   */
   unregisterItem: (id: string) => void;
 
   /**
@@ -79,6 +94,14 @@ export type GalleryState = {
     itemIndex?: number;
   };
 };
+
+/**
+ * The useGallery hook return type.
+ */
+export type UseGalleryReturnType = Omit<
+  GalleryState,
+  "itemsId" | "registerItem" | "unregisterItem"
+>;
 
 /**
  * The valid gallery item types.
