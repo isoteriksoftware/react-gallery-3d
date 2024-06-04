@@ -51,6 +51,7 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
     const {
       item: {
         outerRadius: globalOuterRadius,
+        width: globalWidth,
         height: globalHeight,
         radialSegments: globalRadialSegments,
         heightSegments: globalHeightSegments,
@@ -59,38 +60,50 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
       },
     } = galleryState;
 
-    const { sectionAngle, outerRadius, innerRadius, height, radialSegments, heightSegments } =
-      useMemo(() => {
-        const sectionAngle = preferredSectionAngle || globalSectionAngle;
-        const outerRadius = preferredWidth ? preferredWidth / 2 : globalOuterRadius;
-        const innerRadius =
-          outerRadius - outerRadius * (preferredInnerRadiusPercent || globalInnerRadiusPercent);
-        const height = preferredHeight || globalHeight;
-        const radialSegments = preferredRadialSegments || globalRadialSegments;
-        const heightSegments = preferredHeightSegments || globalHeightSegments;
+    const {
+      sectionAngle,
+      outerRadius,
+      innerRadius,
+      height,
+      radialSegments,
+      heightSegments,
+      innerRadiusPercent,
+      width,
+    } = useMemo(() => {
+      const sectionAngle = preferredSectionAngle || globalSectionAngle;
+      const width = preferredWidth || globalWidth;
+      const outerRadius = width ? width / 2 : globalOuterRadius;
+      const innerRadiusPercent = preferredInnerRadiusPercent || globalInnerRadiusPercent;
+      const innerRadius = outerRadius - outerRadius * innerRadiusPercent;
+      const height = preferredHeight || globalHeight;
+      const radialSegments = preferredRadialSegments || globalRadialSegments;
+      const heightSegments = preferredHeightSegments || globalHeightSegments;
 
-        return {
-          sectionAngle,
-          outerRadius,
-          innerRadius,
-          height,
-          radialSegments,
-          heightSegments,
-        };
-      }, [
-        preferredSectionAngle,
-        globalSectionAngle,
-        preferredWidth,
-        globalOuterRadius,
-        preferredInnerRadiusPercent,
-        globalInnerRadiusPercent,
-        preferredHeight,
-        globalHeight,
-        preferredRadialSegments,
-        globalRadialSegments,
-        preferredHeightSegments,
-        globalHeightSegments,
-      ]);
+      return {
+        sectionAngle,
+        outerRadius,
+        innerRadius,
+        innerRadiusPercent,
+        width,
+        height,
+        radialSegments,
+        heightSegments,
+      };
+    }, [
+      preferredSectionAngle,
+      globalSectionAngle,
+      preferredWidth,
+      globalWidth,
+      globalOuterRadius,
+      preferredInnerRadiusPercent,
+      globalInnerRadiusPercent,
+      preferredHeight,
+      globalHeight,
+      preferredRadialSegments,
+      globalRadialSegments,
+      preferredHeightSegments,
+      globalHeightSegments,
+    ]);
 
     /**
      * Creates a cylinder geometry with the specified radius.
@@ -162,6 +175,14 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
       <GalleryItemContext.Provider
         value={{
           itemIndex,
+          sectionAngle,
+          outerRadius,
+          innerRadius,
+          innerRadiusPercent,
+          width,
+          height,
+          radialSegments,
+          heightSegments,
         }}
       >
         <primitive object={mesh} ref={ref} {...rest}>

@@ -81,21 +81,8 @@ export type GalleryState = {
      * The inner radius of the gallery item.
      */
     innerRadius: number;
-
-    /**
-     * The index of the gallery item.
-     */
-    itemIndex?: number;
   };
 };
-
-/**
- * The useGallery hook return type.
- */
-export type UseGalleryReturnType = Omit<
-  GalleryState,
-  "itemsId" | "registerItem" | "unregisterItem"
->;
 
 /**
  * The gallery item type.

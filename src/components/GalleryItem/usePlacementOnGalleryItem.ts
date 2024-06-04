@@ -1,7 +1,7 @@
-import { useGallery } from "../Gallery";
 import { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import { calculatePlacementOnGalleryItem, ObjectAlignment } from "../../core";
+import { useGalleryItem } from "./useGalleryItem";
 
 /**
  * Calculates the position and orientation vectors for an object to be placed on a gallery item (cylinder segment).
@@ -15,12 +15,7 @@ export const usePlacementOnGalleryItem = (
   objectOffset: number = 0,
   itemAlignmentOffset?: number,
 ): ObjectAlignment => {
-  const { item, itemCount } = useGallery();
-  const { sectionAngle, outerRadius, itemIndex } = item;
-
-  if (!itemIndex && itemIndex != 0) {
-    throw new Error("usePlacementOnGalleryItem can only be used within a GalleryItem.");
-  }
+  const { sectionAngle, outerRadius, itemIndex, itemCount } = useGalleryItem();
 
   const [position] = useState(new Vector3());
   const [orientation] = useState(new Vector3());
