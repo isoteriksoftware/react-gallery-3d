@@ -477,6 +477,9 @@ for more control over the placement of the object.
 The component has a `material` prop that accepts a material or an array of materials to apply to the gallery item.
 This allows you to customize the appearance of the gallery item.
 
+By default, the `material` is automatically disposed when the component is unmounted.
+You can disable this behavior by setting the `disableAutoDispose` prop to `true`.
+
 #### Props
 ```tsx
 type GalleryItemProps = MeshProps & {
@@ -484,6 +487,13 @@ type GalleryItemProps = MeshProps & {
    * The material to apply to the gallery item.
    */
   material: Material | Material[];
+
+  /**
+   * Disables the auto-disposal of the material.
+   *
+   * When set to true, the material will not be disposed of when the component is unmounted.
+   */
+  disableAutoDispose?: boolean;
 
   /**
    * The width of the gallery item.
