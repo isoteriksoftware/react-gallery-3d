@@ -119,6 +119,9 @@ export type GalleryItemProps = MeshProps & {
   sectionAngle?: number;
 };
 
+/**
+ * The return type of the useGalleryItem hook.
+ */
 export type UseGalleryItemReturnType = GalleryItemState & {
   /**
    * The total number of items in the gallery.

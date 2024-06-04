@@ -102,12 +102,13 @@ export type GalleryChildren = GalleryItemType | Iterable<GalleryItemType>;
 export type GalleryProps = Omit<GroupProps, "children" | "ref"> & {
   /**
    * The children of the gallery.
-   * These are the gallery items.
    */
   children: GalleryChildren;
 
   /**
-   * The gallery item properties.
+   * The global properties for all the items in the gallery.
+   *
+   * These properties are used when the gallery item properties are not provided.
    */
   item?: {
     /**
