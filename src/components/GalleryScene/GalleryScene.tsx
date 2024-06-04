@@ -1,12 +1,11 @@
-import React, { useMemo, Suspense } from "react";
+import React, { Suspense } from "react";
 import { GallerySceneProps } from "./GalleryScene.types";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Color } from "three";
 import { Ground } from "../Ground";
 
 export const GalleryScene: React.FC<GallerySceneProps> = ({
-  backgroundColor = "#000000",
+  backgroundColor,
   orbitControls,
   children,
   disableControls,
@@ -17,7 +16,7 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
   ground,
   disableGround,
   camera,
-  scene,
+  suspenseFallback,
   ...rest
 }) => {
   const {
@@ -31,21 +30,20 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
 
   const { color: fogColor = "#000000", near = 10, far = 400, ...restFogProps } = fog || {};
 
-  const background = useMemo(() => new Color(backgroundColor), [backgroundColor]);
-
   return (
     <Canvas
       gl={{ alpha: false }}
       dpr={[1, 2]}
       camera={{ position: [0, 50, 150], fov: 60, ...(camera as any) }}
-      scene={{ background: background, ...(scene as any) }}
       {...rest}
     >
+      {backgroundColor && <color attach="background" args={[backgroundColor]} />}
+
       {!disableGround && <Ground position={[0, -25, 0]} {...ground} />}
 
       {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} {...restFogProps} />}
 
-      <Suspense fallback={null}>
+      <Suspense fallback={suspenseFallback}>
         {children}
 
         {!disableControls && (

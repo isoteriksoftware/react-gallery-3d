@@ -19,6 +19,7 @@ export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, 
     radialSegments = 50,
     heightSegments = 1,
     innerRadiusPercent = 0.01,
+    sectionAngle: preferredSectionAngle,
   } = item || {};
 
   const registerItem = useCallback((id: string) => {
@@ -41,8 +42,7 @@ export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, 
    * Calculates the section angle, outer radius, and inner radius.
    */
   const { sectionAngle, outerRadius, innerRadius } = useMemo(() => {
-    const sides = itemsId.length;
-    const sectionAngle = (2 * Math.PI) / sides;
+    const sectionAngle = preferredSectionAngle || (2 * Math.PI) / itemsId.length;
     const outerRadius = width / 2;
     const innerRadius = outerRadius - outerRadius * innerRadiusPercent;
 
@@ -51,7 +51,7 @@ export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, 
       outerRadius,
       innerRadius,
     };
-  }, [itemsId.length, width, innerRadiusPercent]);
+  }, [preferredSectionAngle, itemsId.length, width, innerRadiusPercent]);
 
   return (
     <GalleryContext.Provider

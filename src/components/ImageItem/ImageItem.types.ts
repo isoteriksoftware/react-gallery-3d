@@ -48,9 +48,9 @@ export type UseImageMaterialOptions = {
 };
 
 /**
- * The useImageMaterial hook result.
+ * The useImageMaterial hook return type.
  */
-export type UseImageMaterialResult = {
+export type UseImageMaterialReturnType = {
   /**
    * The texture for the image.
    */

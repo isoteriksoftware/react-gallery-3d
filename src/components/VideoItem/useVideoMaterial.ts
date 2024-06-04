@@ -1,6 +1,6 @@
 import { DoubleSide, MeshStandardMaterial, VideoTexture } from "three";
 import { useEffect, useMemo } from "react";
-import { UseVideoMaterialOptions, UseVideoMaterialResult } from "./VideoItem.types";
+import { UseVideoMaterialOptions, UseVideoMaterialReturnType } from "./VideoItem.types";
 
 /**
  * This hook creates a material mapped to a video from the provided source.
@@ -22,7 +22,7 @@ export const useVideoMaterial = ({
   autoplay = true,
   muted = true,
   loop = true,
-}: UseVideoMaterialOptions): UseVideoMaterialResult => {
+}: UseVideoMaterialOptions): UseVideoMaterialReturnType => {
   const material = useMemo(() => {
     if (wrappedMaterial) {
       return wrappedMaterial;
@@ -57,8 +57,16 @@ export const useVideoMaterial = ({
     video.src = src;
 
     if (autoplay) {
-      video.muted = true; // Required for autoplay to work
-      video.play();
+      const isPlaying =
+        video.currentTime > 0 &&
+        !video.paused &&
+        !video.ended &&
+        video.readyState > video.HAVE_CURRENT_DATA;
+
+      if (!isPlaying) {
+        video.muted = true; // Required for autoplay to work
+        video.play();
+      }
     }
   }, [autoplay, src, video]);
 

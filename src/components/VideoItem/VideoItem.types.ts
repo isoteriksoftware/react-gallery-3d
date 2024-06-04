@@ -47,9 +47,9 @@ export type UseVideoMaterialOptions = {
 };
 
 /**
- * The useVideoMaterial hook result.
+ * The useVideoMaterial hook return type.
  */
-export type UseVideoMaterialResult = {
+export type UseVideoMaterialReturnType = {
   /**
    * The video element.
    */

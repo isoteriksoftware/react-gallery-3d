@@ -11,6 +11,8 @@ Version 2 introduces exciting new features and optimizations to enhance your gal
 - **Transparent Items**: Gallery items can now be transparent, allowing you to create more complex and visually appealing galleries.
 - **Object Items**: You can now use custom three.js objects as gallery items, giving you more control over the appearance and behavior of your gallery.
 - **New Item Material API**: The item material API has been redesigned to make it easier to create and reuse custom materials for gallery items. Full control over the material properties is now possible.
+- **Support for Deeply Nested Gallery Items**: With v2.2.x, Gallery Items can now be rendered deep within the component tree, allowing for more complex and dynamic galleries.
+- **Support for Gallery with less than 3 items**: You can now render galleries with less than three items. This allows you to create galleries with one or two items.
 - **Improved Performance**: The library has been optimized to improve performance and reduce memory usage, making it faster and more efficient.
 
 ## Demo
@@ -946,20 +948,15 @@ type ObjectItemProps = TransparentItemProps & {
 
 #### Example Usage
 ```tsx
-import { Gallery, GalleryScene, ObjectItem, SolidColorItem } from "react-gallery-3d";
-import { useEffect, useState } from "react";
-import { useAnimations, useGLTF } from "@react-three/drei";
-import { Mesh } from "three";
-
 function BellyDancer() {
   const { scene: model, animations } = useGLTF("/models/belly-dancer.glb");
-  const { ref, mixer } = useAnimations(animations);
+  const { ref, actions } = useAnimations(animations, model);
 
   useEffect(() => {
-    animations.forEach((clip) => {
-      mixer.clipAction(clip).play();
-    });
-  }, [animations, mixer]);
+    if (actions) {
+      actions["Armature|mixamo.com|Layer0"]?.play();
+    }
+  }, [actions]);
 
   return (
     <ObjectItem
@@ -1029,12 +1026,18 @@ export default App;
 ## Hooks
 
 ### `useGallery()`
-The `useGallery` hook provides access to the gallery context, allowing you to access the gallery and items properties.
+The `useGallery` hook provides access to the `GalleryContext` (and `GalleryItemContext` when called within a gallery item), 
+allowing you to access the gallery and items properties.
 
 This hook is useful when you need to access the gallery properties in a child component of the `Gallery` component.
-It returns a `GalleryState` object that contains the gallery item properties.
+It returns a `UseGalleryReturnType` object that contains the gallery item properties.
 
 ```tsx
+type UseGalleryReturnType = Omit<
+  GalleryState,
+  "itemsId" | "registerItem" | "unregisterItem"
+>;
+
 type GalleryState = {
   /**
    * The total number of items in the gallery.
@@ -1232,10 +1235,10 @@ type UseImageMaterialOptions = {
 };
 ```
 
-The hook returns a `UseImageMaterialResult` object that contains the material and texture:
+The hook returns a `UseImageMaterialReturnType` object that contains the material and texture:
 
 ```tsx
-type UseImageMaterialResult = {
+type UseImageMaterialReturnType = {
   /**
    * The texture for the image.
    */
@@ -1377,9 +1380,9 @@ type UseVideoMaterialOptions = {
 };
 ```
 
-The hook returns a `UseVideoMaterialResult` object that contains the material, video texture, and video element:
+The hook returns a `UseVideoMaterialReturnType` object that contains the material, video texture, and video element:
 ```tsx
-type UseVideoMaterialResult = {
+type UseVideoMaterialReturnType = {
   /**
    * The video element.
    */
@@ -1421,7 +1424,7 @@ function ShinyVideoItem({ children, ...rest }: VideoItemProps) {
       roughness: 0.2,
       clearcoat: 1,
       clearcoatRoughness: 0.1,
-      emissive: "rgba(67,9,9,0.1)",
+      emissive: "#430909",
     });
   }, []);
 
@@ -1483,6 +1486,7 @@ Please review the following changes carefully to update your code accordingly:
 - The `GalleryItem` component now requires a `material` prop to specify the material for the gallery item. Previously, the material was created internally using a generator function `itemMaterial` prop. This prop is no longer supported.
 - `GalleryItemMaterial` and its subclasses are no longer available. You should use the `GalleryItem` component with a custom material instead.
 - The `Gallery` component no longer accepts props for managing a `Ground` component. The `Ground` component is now managed internally by the `GalleryScene` component. All the props for the `Ground` are now available in the `GalleryScene` component.
+- Starting from version 2.2.x, the `Gallery` component no longer limits its children to only supported types. This means it will render any child component provided unlike in previous versions where unknown children are ignored.
 
 
 ## Migration Guide

@@ -14,7 +14,20 @@ import { v4 as uuid } from "uuid";
  * @param children The children to render.
  */
 export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
-  ({ material, children, ...rest }, ref) => {
+  (
+    {
+      material,
+      children,
+      width: preferredWidth,
+      height: preferredHeight,
+      radialSegments: preferredRadialSegments,
+      heightSegments: preferredHeightSegments,
+      innerRadiusPercent: preferredInnerRadiusPercent,
+      sectionAngle: preferredSectionAngle,
+      ...rest
+    },
+    ref,
+  ) => {
     const galleryState = useContext(GalleryContext);
     if (galleryState === GALLERY_NO_PROVIDER_FLAG) {
       throw new Error("GalleryItem must be a child of Gallery");
@@ -24,6 +37,7 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
 
     const itemId = useMemo(() => uuid(), []);
     const [itemIndex, setItemIndex] = useState<number>();
+    const [materialApplied, setMaterialApplied] = useState(false);
 
     useEffect(() => {
       registerItem(itemId);
@@ -36,8 +50,61 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
     }, [itemId, itemsId]);
 
     const {
-      item: { outerRadius, height, radialSegments, heightSegments, sectionAngle, innerRadius },
+      item: {
+        outerRadius: globalOuterRadius,
+        width: globalWidth,
+        height: globalHeight,
+        radialSegments: globalRadialSegments,
+        heightSegments: globalHeightSegments,
+        sectionAngle: globalSectionAngle,
+        innerRadiusPercent: globalInnerRadiusPercent,
+      },
     } = galleryState;
+
+    const {
+      sectionAngle,
+      outerRadius,
+      innerRadius,
+      height,
+      radialSegments,
+      heightSegments,
+      innerRadiusPercent,
+      width,
+    } = useMemo(() => {
+      const sectionAngle = preferredSectionAngle || globalSectionAngle;
+      const width = preferredWidth || globalWidth;
+      const outerRadius = width ? width / 2 : globalOuterRadius;
+      const innerRadiusPercent = preferredInnerRadiusPercent || globalInnerRadiusPercent;
+      const innerRadius = outerRadius - outerRadius * innerRadiusPercent;
+      const height = preferredHeight || globalHeight;
+      const radialSegments = preferredRadialSegments || globalRadialSegments;
+      const heightSegments = preferredHeightSegments || globalHeightSegments;
+
+      return {
+        sectionAngle,
+        outerRadius,
+        innerRadius,
+        innerRadiusPercent,
+        width,
+        height,
+        radialSegments,
+        heightSegments,
+      };
+    }, [
+      preferredSectionAngle,
+      globalSectionAngle,
+      preferredWidth,
+      globalWidth,
+      globalOuterRadius,
+      preferredInnerRadiusPercent,
+      globalInnerRadiusPercent,
+      preferredHeight,
+      globalHeight,
+      preferredRadialSegments,
+      globalRadialSegments,
+      preferredHeightSegments,
+      globalHeightSegments,
+    ]);
 
     /**
      * Creates a cylinder geometry with the specified radius.
@@ -100,21 +167,32 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
     useEffect(() => {
       if (mesh) {
         mesh.material = material;
+        setMaterialApplied(true);
       }
     }, [material, mesh]);
 
-    if (itemIndex === undefined || !mesh) return null;
+    if (itemIndex === undefined || !mesh || !materialApplied) {
+      return null;
+    }
 
     return (
-      <GalleryItemContext.Provider
-        value={{
-          itemIndex,
-        }}
-      >
-        <primitive object={mesh} ref={ref} {...rest}>
+      <primitive object={mesh} ref={ref} {...rest}>
+        <GalleryItemContext.Provider
+          value={{
+            itemIndex,
+            sectionAngle,
+            outerRadius,
+            innerRadius,
+            innerRadiusPercent,
+            width,
+            height,
+            radialSegments,
+            heightSegments,
+          }}
+        >
           {children}
-        </primitive>
-      </GalleryItemContext.Provider>
+        </GalleryItemContext.Provider>
+      </primitive>
     );
   },
 );

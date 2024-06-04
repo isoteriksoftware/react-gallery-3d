@@ -81,21 +81,8 @@ export type GalleryState = {
      * The inner radius of the gallery item.
      */
     innerRadius: number;
-
-    /**
-     * The index of the gallery item.
-     */
-    itemIndex?: number;
   };
 };
-
-/**
- * The useGallery hook return type.
- */
-export type UseGalleryReturnType = Omit<
-  GalleryState,
-  "itemsId" | "registerItem" | "unregisterItem"
->;
 
 /**
  * The gallery item type.
@@ -157,5 +144,12 @@ export type GalleryProps = Omit<GroupProps, "children" | "ref"> & {
      * @default 0.01
      */
     innerRadiusPercent?: number;
+
+    /**
+     * The section angle of the gallery item.
+     *
+     * This property is calculated using the total number of items in the gallery when not provided.
+     */
+    sectionAngle?: number;
   };
 };

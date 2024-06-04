@@ -2,6 +2,7 @@ import { CanvasProps, FogProps } from "@react-three/fiber";
 import { ReactNode } from "react";
 import { EnvironmentProps, OrbitControlsProps } from "@react-three/drei";
 import { GroundProps } from "../Ground";
+import { ColorRepresentation } from "three";
 
 /**
  * The GalleryScene component properties.
@@ -19,7 +20,7 @@ export type GallerySceneProps = Omit<CanvasProps, "children"> & {
    *
    * @default #000000
    */
-  backgroundColor?: string;
+  backgroundColor?: ColorRepresentation;
 
   /**
    * The Fog properties
@@ -90,4 +91,9 @@ export type GallerySceneProps = Omit<CanvasProps, "children"> & {
    * @default false
    */
   disableGround?: boolean;
+
+  /**
+   * The fallback to render while loading the scene.
+   */
+  suspenseFallback?: ReactNode;
 };

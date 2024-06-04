@@ -18,11 +18,54 @@ export const GALLERY_ITEM_NO_PROVIDER_FLAG = Symbol("GALLERY_ITEM_NO_PROVIDER");
 
 /**
  * The gallery item state.
- * This state is used to keep track of the current item index.
  */
-export interface GalleryItemState {
+export type GalleryItemState = {
+  /**
+   * The width of the gallery item.
+   */
+  width: number;
+
+  /**
+   * The height of the gallery item.
+   */
+  height: number;
+
+  /**
+   * The number of radial segments.
+   */
+  radialSegments: number;
+
+  /**
+   * The number of height segments.
+   */
+  heightSegments: number;
+
+  /**
+   * The percentage of the outer radius to use as the inner radius.
+   */
+  innerRadiusPercent: number;
+
+  /**
+   * The angle of the section of the gallery item.
+   * This is used to calculate the position of the gallery item.
+   */
+  sectionAngle: number;
+
+  /**
+   * The radius of the gallery item.
+   */
+  outerRadius: number;
+
+  /**
+   * The inner radius of the gallery item.
+   */
+  innerRadius: number;
+
+  /**
+   * The index of the gallery item.
+   */
   itemIndex: number;
-}
+};
 
 /**
  * The GalleryItem component properties.
@@ -32,6 +75,55 @@ export type GalleryItemProps = MeshProps & {
    * The material to apply to the gallery item.
    */
   material: Material | Material[];
+
+  /**
+   * The width of the gallery item.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  width?: number;
+
+  /**
+   * The height of the gallery item.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  height?: number;
+
+  /**
+   * The number of radial segments.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  radialSegments?: number;
+
+  /**
+   * The number of height segments.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  heightSegments?: number;
+
+  /**
+   * The percentage of the outer radius to use as the inner radius.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  innerRadiusPercent?: number;
+
+  /**
+   * The section angle of the gallery item.
+   *
+   * When not provided, the value is taken from the Gallery item properties.
+   */
+  sectionAngle?: number;
+};
+
+export type UseGalleryItemReturnType = GalleryItemState & {
+  /**
+   * The total number of items in the gallery.
+   */
+  itemCount: number;
 };
 
 /**

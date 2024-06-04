@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { SolidColorItemProps } from "./SolidColorItem.types";
 import { GalleryItem } from "../GalleryItem";
-import { Mesh, MeshStandardMaterial } from "three";
+import { DoubleSide, Mesh, MeshStandardMaterial } from "three";
 
 /**
  * This component is a wrapper around the GalleryItem component, and it renders a solid color item.
@@ -15,6 +15,7 @@ export const SolidColorItem = React.forwardRef<Mesh, SolidColorItemProps>(
         polygonOffset: true,
         polygonOffsetFactor: 1,
         polygonOffsetUnits: 1,
+        side: DoubleSide,
       });
     }, []);
 
