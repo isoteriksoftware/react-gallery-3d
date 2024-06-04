@@ -29,7 +29,7 @@ export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, 
     setItemsId((prevItems) => {
       if (prevItems.includes(id)) {
         // eslint-disable-next-line no-console
-        console.warn("GalleryItem is already registered");
+        console.warn(`GalleryItem id is already registered: "${id}"`);
         return prevItems;
       }
 
