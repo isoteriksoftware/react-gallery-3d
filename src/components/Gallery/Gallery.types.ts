@@ -1,11 +1,5 @@
 import { GroupProps } from "@react-three/fiber";
 import { ReactElement } from "react";
-import { GalleryItem, GalleryItemProps } from "../GalleryItem";
-import { SolidColorItem, SolidColorItemProps } from "../SolidColorItem";
-import { ImageItem, ImageItemProps } from "../ImageItem";
-import { VideoItem, VideoItemProps } from "../VideoItem";
-import { TransparentItem, TransparentItemProps } from "../TransparentItem";
-import { ObjectItem, ObjectItemProps } from "../ObjectItem";
 
 /**
  * A flag to indicate that no provider was found.
@@ -21,6 +15,27 @@ export type GalleryState = {
    * The total number of items in the gallery.
    */
   itemCount: number;
+
+  /**
+   * The gallery items ids.
+   */
+  itemsId: string[];
+
+  /**
+   * Registers a gallery item.
+   * This function is called by the gallery item component to register itself.
+   *
+   * @param id The id of the gallery item.
+   */
+  registerItem: (id: string) => void;
+
+  /**
+   * Unregisters a gallery item.
+   * This function is called by the gallery item component to unregister itself.
+   *
+   * @param id The id of the gallery item.
+   */
+  unregisterItem: (id: string) => void;
 
   /**
    * The gallery item properties.
@@ -75,38 +90,24 @@ export type GalleryState = {
 };
 
 /**
- * The valid gallery item types.
- * These are the types that can be used as children of the Gallery component.
- * Any other type will be ignored.
+ * The useGallery hook return type.
  */
-export const AllowedGalleryItemTypes = [
-  GalleryItem,
-  SolidColorItem,
-  ImageItem,
-  VideoItem,
-  TransparentItem,
-  ObjectItem,
-];
+export type UseGalleryReturnType = Omit<
+  GalleryState,
+  "itemsId" | "registerItem" | "unregisterItem"
+>;
 
 /**
  * The gallery item type.
  */
-export type GalleryItemType =
-  | ReactElement<GalleryItemProps, typeof GalleryItem>
-  | ReactElement<SolidColorItemProps, typeof SolidColorItem>
-  | ReactElement<ImageItemProps, typeof ImageItem>
-  | ReactElement<VideoItemProps, typeof VideoItem>
-  | ReactElement<TransparentItemProps, typeof TransparentItem>
-  | ReactElement<ObjectItemProps, typeof ObjectItem>;
+export type GalleryItemType = ReactElement;
 
 /**
  * The gallery children type.
  * This is the type of the children of the Gallery component.
  * At least 3 gallery items are required.
  */
-export type GalleryChildren =
-  | [GalleryItemType, GalleryItemType, GalleryItemType, ...GalleryItemType[]]
-  | GalleryItemType[];
+export type GalleryChildren = GalleryItemType | Iterable<GalleryItemType>;
 
 /**
  * The Gallery component properties.

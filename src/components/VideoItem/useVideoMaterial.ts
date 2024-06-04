@@ -1,6 +1,6 @@
 import { DoubleSide, MeshStandardMaterial, VideoTexture } from "three";
 import { useEffect, useMemo } from "react";
-import { UseVideoMaterialOptions, UseVideoMaterialResult } from "react-gallery-3d";
+import { UseVideoMaterialOptions, UseVideoMaterialResult } from "./VideoItem.types";
 
 /**
  * This hook creates a material mapped to a video from the provided source.

@@ -1,7 +1,6 @@
-import React, { useMemo } from "react";
-import GalleryContext from "./GalleryContext";
-import GalleryItemContext from "../GalleryItem/GalleryItemContext";
-import { AllowedGalleryItemTypes, GalleryProps } from "./Gallery.types";
+import React, { useCallback, useMemo, useState } from "react";
+import { GalleryContext } from "./GalleryContext";
+import { GalleryProps } from "./Gallery.types";
 import { Group } from "three";
 
 /**
@@ -12,9 +11,7 @@ import { Group } from "three";
  * @param item The gallery item properties.
  */
 export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, ...rest }, ref) => {
-  if (children.length < 3) {
-    throw new Error("At least 3 Gallery Items are required");
-  }
+  const [itemsId, setItemsId] = useState<string[]>([]);
 
   const {
     width = 120,
@@ -24,28 +21,27 @@ export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, 
     innerRadiusPercent = 0.01,
   } = item || {};
 
-  /**
-   * Gets the children that are allowed to be rendered.
-   */
-  const validChildren = useMemo(() => {
-    return children.filter((child) => {
-      if (!AllowedGalleryItemTypes.includes(child.type)) {
-        if (Array.isArray(child)) {
-          return child.every((subChild) => {
-            return AllowedGalleryItemTypes.includes(subChild.type);
-          });
-        }
+  const registerItem = useCallback((id: string) => {
+    setItemsId((prevItems) => {
+      if (prevItems.includes(id)) {
+        // eslint-disable-next-line no-console
+        console.warn(`GalleryItem id is already registered: "${id}"`);
+        return prevItems;
       }
 
-      return true;
+      return [...prevItems, id];
     });
-  }, [children]);
+  }, []);
+
+  const unregisterItem = useCallback((id: string) => {
+    setItemsId((prevItems) => prevItems.filter((i) => i !== id));
+  }, []);
 
   /**
    * Calculates the section angle, outer radius, and inner radius.
    */
   const { sectionAngle, outerRadius, innerRadius } = useMemo(() => {
-    const sides = validChildren.length;
+    const sides = itemsId.length;
     const sectionAngle = (2 * Math.PI) / sides;
     const outerRadius = width / 2;
     const innerRadius = outerRadius - outerRadius * innerRadiusPercent;
@@ -55,12 +51,15 @@ export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, 
       outerRadius,
       innerRadius,
     };
-  }, [validChildren.length, width, innerRadiusPercent]);
+  }, [itemsId.length, width, innerRadiusPercent]);
 
   return (
     <GalleryContext.Provider
       value={{
-        itemCount: validChildren.length,
+        itemsId,
+        registerItem,
+        unregisterItem,
+        itemCount: itemsId.length,
         item: {
           width,
           height,
@@ -74,18 +73,7 @@ export const Gallery = React.forwardRef<Group, GalleryProps>(({ children, item, 
       }}
     >
       <group ref={ref} {...rest}>
-        {validChildren.map((child, index) => {
-          return (
-            <GalleryItemContext.Provider
-              key={index}
-              value={{
-                itemIndex: index,
-              }}
-            >
-              {child}
-            </GalleryItemContext.Provider>
-          );
-        })}
+        {children}
       </group>
     </GalleryContext.Provider>
   );

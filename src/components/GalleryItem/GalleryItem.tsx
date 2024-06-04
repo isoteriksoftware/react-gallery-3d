@@ -1,9 +1,11 @@
-import { GALLERY_ITEM_NO_PROVIDER_FLAG, GalleryItemProps } from "./GalleryItem.types";
-import React, { useCallback, useContext, useEffect, useMemo } from "react";
-import { useGallery } from "../Gallery";
+import { GalleryItemProps } from "./GalleryItem.types";
+import React, { forwardRef, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { GALLERY_NO_PROVIDER_FLAG } from "../Gallery";
 import { CylinderGeometry, Mesh } from "three";
 import { CSG } from "three-csg-ts";
-import GalleryItemContext from "./GalleryItemContext";
+import { GalleryItemContext } from "./GalleryItemContext";
+import { GalleryContext } from "../Gallery/GalleryContext";
+import { v4 as uuid } from "uuid";
 
 /**
  * This component is a child of the gallery component, and it represents an item in the gallery.
@@ -11,16 +13,31 @@ import GalleryItemContext from "./GalleryItemContext";
  * @param material The material to use for the item.
  * @param children The children to render.
  */
-export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
+export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
   ({ material, children, ...rest }, ref) => {
-    const itemData = useContext(GalleryItemContext);
-    if (itemData === GALLERY_ITEM_NO_PROVIDER_FLAG) {
+    const galleryState = useContext(GalleryContext);
+    if (galleryState === GALLERY_NO_PROVIDER_FLAG) {
       throw new Error("GalleryItem must be a child of Gallery");
     }
 
-    const { itemIndex } = itemData;
-    const { outerRadius, height, radialSegments, heightSegments, sectionAngle, innerRadius } =
-      useGallery().item;
+    const { registerItem, unregisterItem, itemsId } = galleryState;
+
+    const itemId = useMemo(() => uuid(), []);
+    const [itemIndex, setItemIndex] = useState<number>();
+
+    useEffect(() => {
+      registerItem(itemId);
+      return () => unregisterItem(itemId);
+    }, [itemId, registerItem, unregisterItem]);
+
+    useEffect(() => {
+      const index = itemsId.indexOf(itemId);
+      setItemIndex(index === -1 ? undefined : index);
+    }, [itemId, itemsId]);
+
+    const {
+      item: { outerRadius, height, radialSegments, heightSegments, sectionAngle, innerRadius },
+    } = galleryState;
 
     /**
      * Creates a cylinder geometry with the specified radius.
@@ -30,16 +47,18 @@ export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
      */
     const createCylinderGeometry = useCallback(
       (radius: number) => {
-        return new CylinderGeometry(
-          radius,
-          radius,
-          height,
-          radialSegments,
-          heightSegments,
-          false,
-          itemIndex * sectionAngle,
-          sectionAngle,
-        );
+        return itemIndex === undefined
+          ? null
+          : new CylinderGeometry(
+              radius,
+              radius,
+              height,
+              radialSegments,
+              heightSegments,
+              false,
+              itemIndex * sectionAngle,
+              sectionAngle,
+            );
       },
       [height, heightSegments, itemIndex, radialSegments, sectionAngle],
     );
@@ -56,30 +75,46 @@ export const GalleryItem = React.forwardRef<Mesh, GalleryItemProps>(
     }, [createCylinderGeometry, innerRadius]);
 
     const mesh = useMemo(() => {
-      innerMesh.geometry = innerGeometry;
-      outerMesh.geometry = outerGeometry;
+      if (innerGeometry && outerGeometry) {
+        innerMesh.geometry = innerGeometry;
+        outerMesh.geometry = outerGeometry;
 
-      // Perform CSG subtraction to hollow out the segment
-      return CSG.subtract(outerMesh, innerMesh);
+        // Perform CSG subtraction to hollow out the segment
+        return CSG.subtract(outerMesh, innerMesh);
+      }
     }, [innerGeometry, innerMesh, outerGeometry, outerMesh]);
 
     useEffect(() => {
-      outerMesh.geometry = outerGeometry;
+      if (outerGeometry) {
+        outerMesh.geometry = outerGeometry;
+      }
     }, [outerGeometry, outerMesh]);
 
     useEffect(() => {
-      innerMesh.geometry = innerGeometry;
-      innerMesh.position.y = -0.01; // Offset to prevent z-fighting
+      if (innerGeometry) {
+        innerMesh.geometry = innerGeometry;
+        innerMesh.position.y = -0.01; // Offset to prevent z-fighting
+      }
     }, [innerGeometry, innerMesh]);
 
     useEffect(() => {
-      mesh.material = material;
+      if (mesh) {
+        mesh.material = material;
+      }
     }, [material, mesh]);
 
+    if (itemIndex === undefined || !mesh) return null;
+
     return (
-      <primitive object={mesh} ref={ref} {...rest}>
-        {children}
-      </primitive>
+      <GalleryItemContext.Provider
+        value={{
+          itemIndex,
+        }}
+      >
+        <primitive object={mesh} ref={ref} {...rest}>
+          {children}
+        </primitive>
+      </GalleryItemContext.Provider>
     );
   },
 );
