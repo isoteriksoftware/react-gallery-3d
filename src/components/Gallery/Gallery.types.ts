@@ -157,5 +157,12 @@ export type GalleryProps = Omit<GroupProps, "children" | "ref"> & {
      * @default 0.01
      */
     innerRadiusPercent?: number;
+
+    /**
+     * The section angle of the gallery item.
+     *
+     * This property is calculated using the total number of items in the gallery when not provided.
+     */
+    sectionAngle?: number;
   };
 };

@@ -14,7 +14,20 @@ import { v4 as uuid } from "uuid";
  * @param children The children to render.
  */
 export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
-  ({ material, children, ...rest }, ref) => {
+  (
+    {
+      material,
+      children,
+      width: preferredWidth,
+      height: preferredHeight,
+      radialSegments: preferredRadialSegments,
+      heightSegments: preferredHeightSegments,
+      innerRadiusPercent: preferredInnerRadiusPercent,
+      sectionAngle: preferredSectionAngle,
+      ...rest
+    },
+    ref,
+  ) => {
     const galleryState = useContext(GalleryContext);
     if (galleryState === GALLERY_NO_PROVIDER_FLAG) {
       throw new Error("GalleryItem must be a child of Gallery");
@@ -36,8 +49,48 @@ export const GalleryItem = forwardRef<Mesh, GalleryItemProps>(
     }, [itemId, itemsId]);
 
     const {
-      item: { outerRadius, height, radialSegments, heightSegments, sectionAngle, innerRadius },
+      item: {
+        outerRadius: globalOuterRadius,
+        height: globalHeight,
+        radialSegments: globalRadialSegments,
+        heightSegments: globalHeightSegments,
+        sectionAngle: globalSectionAngle,
+        innerRadiusPercent: globalInnerRadiusPercent,
+      },
     } = galleryState;
+
+    const { sectionAngle, outerRadius, innerRadius, height, radialSegments, heightSegments } =
+      useMemo(() => {
+        const sectionAngle = preferredSectionAngle || globalSectionAngle;
+        const outerRadius = preferredWidth ? preferredWidth / 2 : globalOuterRadius;
+        const innerRadius =
+          outerRadius - outerRadius * (preferredInnerRadiusPercent || globalInnerRadiusPercent);
+        const height = preferredHeight || globalHeight;
+        const radialSegments = preferredRadialSegments || globalRadialSegments;
+        const heightSegments = preferredHeightSegments || globalHeightSegments;
+
+        return {
+          sectionAngle,
+          outerRadius,
+          innerRadius,
+          height,
+          radialSegments,
+          heightSegments,
+        };
+      }, [
+        preferredSectionAngle,
+        globalSectionAngle,
+        preferredWidth,
+        globalOuterRadius,
+        preferredInnerRadiusPercent,
+        globalInnerRadiusPercent,
+        preferredHeight,
+        globalHeight,
+        preferredRadialSegments,
+        globalRadialSegments,
+        preferredHeightSegments,
+        globalHeightSegments,
+      ]);
 
     /**
      * Creates a cylinder geometry with the specified radius.
