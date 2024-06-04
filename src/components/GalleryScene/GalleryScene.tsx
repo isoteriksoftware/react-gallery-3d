@@ -18,6 +18,7 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
   disableGround,
   camera,
   scene,
+  suspenseFallback,
   ...rest
 }) => {
   const {
@@ -45,7 +46,7 @@ export const GalleryScene: React.FC<GallerySceneProps> = ({
 
       {!disableFog && <fog attach="fog" color={fogColor} near={near} far={far} {...restFogProps} />}
 
-      <Suspense fallback={null}>
+      <Suspense fallback={suspenseFallback}>
         {children}
 
         {!disableControls && (

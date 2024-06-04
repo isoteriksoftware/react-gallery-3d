@@ -90,4 +90,9 @@ export type GallerySceneProps = Omit<CanvasProps, "children"> & {
    * @default false
    */
   disableGround?: boolean;
+
+  /**
+   * The fallback to render while loading.
+   */
+  suspenseFallback?: ReactNode;
 };
