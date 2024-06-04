@@ -5,12 +5,13 @@ on:
       version:
         description: New version
         required: true
-        default: 'patch'
+        default: 'prerelease'
         type: choice
         options:
           - patch
           - minor
           - major
+          - prerelease
 
 jobs:
   version:
@@ -29,7 +30,12 @@ jobs:
           node-version: 18.x
 
       - name: Generate new version
-        run: npm version ${{ github.event.inputs.version }}
+        run: |
+          if [ "${{ github.event.inputs.version }}" == "prerelease" ]; then
+            npm version prerelease --preid=beta
+          else
+            npm version ${{ github.event.inputs.version }}
+          fi
 
       - name: Push new version tag to repository
         run: git push origin main --tags
