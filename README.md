@@ -480,6 +480,9 @@ This allows you to customize the appearance of the gallery item.
 By default, the `material` is automatically disposed when the component is unmounted.
 You can disable this behavior by setting the `disableAutoDispose` prop to `true`.
 
+**Be careful when sharing materials between gallery items.
+If you want to reuse a material, consider setting the `disableAutoDispose` prop to `true` to prevent the material from being disposed when one of the items is unmounted.**
+
 #### Props
 ```tsx
 type GalleryItemProps = MeshProps & {
