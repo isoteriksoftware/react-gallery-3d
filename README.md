@@ -385,10 +385,14 @@ type GallerySceneProps = Omit<CanvasProps, "children"> & {
 The `Gallery` component is a container for gallery items. It arranges the items in a cylindrical layout around the center of the scene.
 It requires at least three items to render.
 
-All children of the `Gallery` component must be `GalleryItem` or its subclasses (e.g., `ImageItem`, `VideoItem`, `SolidColorItem`, etc.).
-Unknown children will be ignored.
+All children of the `Gallery` are rendered. Once a `GalleryItem` is rendered, it is automatically placed on the gallery.
+`GalleryItem` components can be anywhere in the component tree (as a child of `Gallery`), and they will be correctly placed on the gallery.
 
-It accepts global props to customize the appearance and layout of the gallery items.
+The `Gallery` component automatically calculates the position and rotation of the items based on the number of items in the gallery.
+You can modify the layout of gallery items by passing props to the `GalleryItem` component or its wrappers.
+
+It accepts global props to customize the appearance and layout of the gallery items. Any of the props can be overridden for individual items.
+Check the [GalleryItem component](#galleryitem) for the properties that can be overridden.
 
 #### Props
 ```tsx
@@ -1297,7 +1301,7 @@ type ObjectAlignment = {
 ```
 
 > **Hint** <br/>
-> Check how the `usePlacementOnGalleryItem` hook in the previous example.
+> Check how the `usePlacementOnGalleryItem` hook is used in the [useGalleryItem example](#example-usage-8).
 
 <br/>
 
@@ -1955,7 +1959,7 @@ function App() {
 #### Now
 ```tsx
 // THIS WORKS
-// Gallery will render all children of the Gallery component
+// Gallery will render all its children
 // ImageItem renders a GalleryItem, so it will be treated as a gallery item
 
 const MyGalleryItems = () => {
